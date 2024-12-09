@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>StartScreen.qml</file>
+        <file>images/bkg.jpg</file>
+        <file>images/cake.png</file>
+        <file>images/exit.png</file>
+        <file>images/name.png</file>
+        <file>images/name2.png</file>
+        <file>images/name3.png</file>
+        <file>ZeroWindow.qml</file>
+        <file>OneWindow.qml</file>
+        <file>TwoWindow.qml</file>
+    </qresource>
+</RCC>
