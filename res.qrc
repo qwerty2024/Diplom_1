@@ -10,5 +10,8 @@
         <file>ZeroWindow.qml</file>
         <file>OneWindow.qml</file>
         <file>TwoWindow.qml</file>
+        <file>userTable.qml</file>
+        <file>images/bkg2.jpg</file>
+        <file>images/bkg3.jpg</file>
     </qresource>
 </RCC>

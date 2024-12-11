@@ -26,16 +26,16 @@ Database::Database(QObject *parent) : QObject(parent)
     query->exec("CREATE TABLE Users(login VARCHAR(255) NOT NULL PRIMARY KEY, pass VARCHAR(255) NOT NULL, status INT NOT NULL DEFAULT '1');");
 
     // Если таблица была только создана, нужно провирить наличие админа, если его нет, то создаем
-    if(query->exec("SELECT login FROM Users WHERE login = 'ADMIN';"))
+    if(query->exec("SELECT login FROM Users WHERE login = 'root';"))
     {
         if (query->next())
         {
-            qDebug() << "ADMIN exist";
+            qDebug() << "root exist";
         }
         else
         {
-            Hash passHash = sha1("ADMIN");
-            query->exec("INSERT INTO Users(login,pass,status) VALUES('ADMIN','" + passHash.toQString() + "',0);");
+            Hash passHash = sha1("root");
+            query->exec("INSERT INTO Users(login,pass,status) VALUES('root','" + passHash.toQString() + "',0);");
         }
     }
 
@@ -108,6 +108,47 @@ void Database::authentication(QString text)
     }
 }
 
+void Database::show_user_table()
+{
+    // тут нужно запихать в какой-то стринг файл
+    update_user_status(); // запрос в базу данных о пользователях и их статусах
+
+    qDebug() << "создаем окно для таблицы пользователей и их статусов";
+
+    QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/userTable.qml")));
+    QObject *window = component.create();
+
+    if (window == nullptr) {
+        qDebug() << "Ошибка при загрузке userTable.qml:" << component.errors();
+    } else {
+        // Здесь вы можете настроить это окно, если нужно
+        window->setProperty("visible", true); // сделать окно видимым
+    }
+}
+
+void Database::change_rule(QString login, QString status)
+{
+    if (login != "root")
+    {
+        qDebug() << login << ": change to " << status;
+        if (user_exists(login))
+        {
+            if (status == "Администратор")
+                status = "0";
+            else if (status == "Клиент")
+                status = "1";
+            else if(status == "Рабочий")
+                status = "2";
+
+            query = new QSqlQuery(db);
+            query->exec("UPDATE Users SET status = '" + status + "' WHERE login = '" + login + "';");
+            delete query;
+
+            update_user_status();
+        }
+    }
+}
+
 int Database::test_enter(const QString& login, const QString& pass)
 {
     //qDebug() << login << " ===";
@@ -140,6 +181,25 @@ int Database::test_enter(const QString& login, const QString& pass)
     }
     else return -1;
 
+}
+
+void Database::update_user_status()
+{
+    query = new QSqlQuery(db);
+
+    users = "";
+    statuses = "";
+
+    if(query->exec("SELECT login,status FROM Users;"))
+    {
+        while (query->next())
+        {
+            users.push_back(query->value(0).toString() + '@');
+            statuses.push_back(query->value(1).toString() + '@');
+        }
+    }
+
+    delete query;
 }
 
 void Database::openZeroWindow()
