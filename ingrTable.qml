@@ -1,10 +1,9 @@
 import QtQuick 2.5
-import QtQuick.Controls 2.1
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.1
 
 ApplicationWindow {
-    id: zeroWindow
+    id: ingrWindow
     visible: true
     width: 490
     height: 760

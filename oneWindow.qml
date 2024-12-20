@@ -2,7 +2,7 @@ import QtQuick 2.5
 import QtQuick.Controls 2.1
 
 ApplicationWindow {
-    id: zeroWindow
+    id: oneWindow
     visible: true
     width: 640
     height: 480

@@ -6,12 +6,13 @@
 #include <QSqlTableModel>
 #include <QObject>
 #include <QVector>
+#include <QVariantList>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
 class Database : public QObject
 {
     Q_OBJECT
-
-    //Q_PROPERTY(int rules READ myVariable WRITE setMyVariable NOTIFY myVariableChanged)
 
 public:
     explicit Database(QObject *parent = 0);
@@ -19,6 +20,8 @@ public:
     Q_INVOKABLE void authentication(QString text);
     Q_INVOKABLE void show_user_table();
     Q_INVOKABLE void show_ingr_table();
+    Q_INVOKABLE void show_complex_ingr_table();
+    Q_INVOKABLE void open_add_complex_ingr();
     Q_INVOKABLE void change_rule(QString login, QString status);
     Q_INVOKABLE void add_ingr(QString name, QString residue, QString expiration_date);
     Q_INVOKABLE void delete_ingr(QString name, QString residue, QString expiration_date);
@@ -29,6 +32,7 @@ public:
 
     void update_user_status();
     void update_ingridients();
+    Q_INVOKABLE void update_comp_ingridients();
 
     void openZeroWindow();
     void openOneWindow();
@@ -63,9 +67,23 @@ public:
     QString expiration_date = "";
     Q_PROPERTY(QString m_expiration_date MEMBER expiration_date CONSTANT)
 
+    QString comp_ingr = "";
+    Q_PROPERTY(QString m_comp_ingr MEMBER comp_ingr CONSTANT)
 
+    QString type_comp_ingr = "";
+    Q_PROPERTY(QString m_type_comp_ingr MEMBER type_comp_ingr CONSTANT)
+
+    QString ingr_for_comp_ingr = "";
+    Q_PROPERTY(QString m_ingr_for_comp_ingr MEMBER ingr_for_comp_ingr CONSTANT)
+
+    QString count_ingr_for_comp_ingr = "";
+    Q_PROPERTY(QString m_count_ingr_for_comp_ingr MEMBER count_ingr_for_comp_ingr CONSTANT)
 
     virtual ~Database() {}
+
+public slots:
+    void add_comp_ingr(const QVariant &name, const QVariant &type, const QVariantList &ingredients, const QVariantList &counts);
+    void show_rec_comp_ingr(const QVariant &name);
 
 };
 

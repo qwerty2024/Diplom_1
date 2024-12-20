@@ -5,10 +5,17 @@
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <QSqlError>
-
+#include <string>
+#include <unordered_set>
 #include <QDebug>
 
 extern QQmlApplicationEngine *enginePtr;
+
+std::string variantToString(const QVariant &variant)
+{
+    QString qString = variant.toString();
+    return qString.toStdString();
+}
 
 Database::Database(QObject *parent) : QObject(parent)
 {
@@ -53,15 +60,7 @@ Database::Database(QObject *parent) : QObject(parent)
 //                                    "FOREIGN KEY (login) REFERENCES Users(login));");
 //
 //
-//    // Создаем таблицу - Tорты
-//    query->exec("CREATE TABLE Cakes(id_cake INT PRIMARY KEY AUTO_INCREMENT, "
-//                                    "name VARCHAR(255) NOT NULL, "
-//                                    "price INT NOT NULL, "
-//                                    "weight SMALLINT NOT NULL, "
-//                                    "description TEXT, "
-//                                    "name_pic VARCHAR(255) NOT NULL, "
-//                                    "estimation SMALLINT NOT NULL, "
-//                                    "review TEXT);");
+
 //
 //
 //    // Создаем таблицу - Заказанные торты
@@ -74,26 +73,20 @@ Database::Database(QObject *parent) : QObject(parent)
 //                                    "FOREIGN KEY (id_worker) REFERENCES Users(login));");
 //
 //
-//    // Создаем таблицу - Рецепты
-//    query->exec("CREATE TABLE Recipe(id_recipe INT PRIMARY KEY AUTO_INCREMENT, "
-//                                    "id_cake INT NOT NULL, "
-//                                    "id_comp_ingr INT NOT NULL, "
-//                                    "amount SMALLINT NOT NULL, "
-//                                    "FOREIGN KEY (id_cake) REFERENCES Cakes(id_cake))"
-//                                    "FOREIGN KEY (id_comp_ingr) REFERENCES Compound_ingr(id_comp_ingr));");
-//
-//    // Создаем таблицу - Сложные ингридиенты
-//    query->exec("CREATE TABLE Compound_ingr(id_comp_ingr INT PRIMARY KEY AUTO_INCREMENT, "
-//                                    "id_type INT NOT NULL, "
-//                                    "id_ingr INT NOT NULL, "
-//                                    "amount SMALLINT NOT NULL, "
-//                                    "FOREIGN KEY (id_type) REFERENCES Type_comp_ingr(id_type))"
-//                                    "FOREIGN KEY (id_ingr) REFERENCES Ingredients(id_ingr));");
-//
-//
-//    // Создаем таблицу - Тип сложного ингридиента
-//    query->exec("CREATE TABLE Type_comp_ingr(id_type INT PRIMARY KEY AUTO_INCREMENT, "
-//                                    "name VARCHAR(255) NOT NULL);");
+
+
+    // Создаем таблицу - Тип сложного ингридиента
+    query->exec("CREATE TABLE Type_comp_ingr(id_type INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                            "name VARCHAR(255) NOT NULL);");
+
+
+    // Создаем таблицу - Сложные ингридиенты (рецепты)
+    query->exec("CREATE TABLE Compound_ingr(id_comp_ingr INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                            "name_comp_ingr VARCHAR(255) NOT NULL, "
+                                            "id_type INTEGER NOT NULL, "
+                                            "name_ingr VARCHAR(255) NOT NULL, "
+                                            "count INTEGER NOT NULL, "
+                                            "FOREIGN KEY (id_type) REFERENCES Type_comp_ingr(id_type));");
 
 
     // Создаем таблицу - Ингридиенты
@@ -101,6 +94,25 @@ Database::Database(QObject *parent) : QObject(parent)
                                          "name VARCHAR(255) NOT NULL, "
                                          "residue INTEGER NOT NULL, "
                                          "data VARCHAR(255) NOT NULL);");
+
+    //    // Создаем таблицу - Рецепты
+    //    query->exec("CREATE TABLE Recipe(id_recipe INT PRIMARY KEY AUTO_INCREMENT, "
+    //                                    "id_cake INT NOT NULL, "
+    //                                    "id_comp_ingr INT NOT NULL, "
+    //                                    "amount SMALLINT NOT NULL, "
+    //                                    "FOREIGN KEY (id_cake) REFERENCES Cakes(id_cake))"
+    //                                    "FOREIGN KEY (id_comp_ingr) REFERENCES Compound_ingr(id_comp_ingr));");
+    //
+
+    //    // Создаем таблицу - Tорты
+    //    query->exec("CREATE TABLE Cakes(id_cake INT PRIMARY KEY AUTO_INCREMENT, "
+    //                                    "name VARCHAR(255) NOT NULL, "
+    //                                    "price INT NOT NULL, "
+    //                                    "weight SMALLINT NOT NULL, "
+    //                                    "description TEXT, "
+    //                                    "name_pic VARCHAR(255) NOT NULL, "
+    //                                    "estimation SMALLINT NOT NULL, "
+    //                                    "review TEXT);");
 
 
     //QString error = query->lastError().text();
@@ -210,6 +222,38 @@ void Database::show_ingr_table()
 
     if (window == nullptr) {
         qDebug() << "Ошибка при загрузке ingrTable.qml:" << component.errors();
+    } else {
+        // Здесь вы можете настроить это окно, если нужно
+        window->setProperty("visible", true); // сделать окно видимым
+    }
+}
+
+void Database::show_complex_ingr_table()
+{
+    update_comp_ingridients();
+
+    qDebug() << "создаем окно для сложных ингредиентов";
+
+    QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/compIngrTable.qml")));
+    QObject *window = component.create();
+
+    if (window == nullptr) {
+        qDebug() << "Ошибка при загрузке compIingrTable.qml:" << component.errors();
+    } else {
+        // Здесь вы можете настроить это окно, если нужно
+        window->setProperty("visible", true); // сделать окно видимым
+    }
+}
+
+void Database::open_add_complex_ingr()
+{
+    qDebug() << "создаем окно для создания нового сложного ингредиента";
+
+    QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/compIngrAdd.qml")));
+    QObject *window = component.create();
+
+    if (window == nullptr) {
+        qDebug() << "Ошибка при загрузке compIngrAdd.qml:" << component.errors();
     } else {
         // Здесь вы можете настроить это окно, если нужно
         window->setProperty("visible", true); // сделать окно видимым
@@ -372,6 +416,37 @@ void Database::update_ingridients()
     delete query;
 }
 
+void Database::update_comp_ingridients()
+{
+    query = new QSqlQuery(db);
+
+    comp_ingr = "";
+    type_comp_ingr = "";
+
+    std::unordered_set<std::string> us;
+
+    if(query->exec("SELECT Compound_ingr.name_comp_ingr,Type_comp_ingr.name FROM Compound_ingr JOIN Type_comp_ingr ON Compound_ingr.id_type = Type_comp_ingr.id_type;"))
+    {
+        while (query->next())
+        {
+            std::string name = variantToString(query->value(0));
+            //qDebug() << QString::fromStdString(name);
+            if (us.find(name) == us.end())
+            {
+                us.insert(name);
+                comp_ingr.push_back(query->value(0).toString() + '@');
+                type_comp_ingr.push_back(query->value(1).toString() + '@');
+            }
+
+        }
+    }
+
+    qDebug() << comp_ingr;
+    qDebug() << type_comp_ingr;
+
+    delete query;
+}
+
 void Database::openZeroWindow()
 {
     qDebug() << "создаем нулевое окно";
@@ -423,6 +498,64 @@ void Database::hideRegWindow(QObject *window)
     {
         window->setProperty("visible", false); // или можно использовать deleteLater() для безопасного удаления
     }
+}
+
+void Database::add_comp_ingr(const QVariant &name, const QVariant &type, const QVariantList &ingredients, const QVariantList &counts)
+{
+    //qDebug() << "Name:" << name;
+    //qDebug() << "Type:" << type;
+    //qDebug() << "Ingredients:" << ingredients;
+    //qDebug() << "Counts:" << counts;
+    query = new QSqlQuery(db);
+
+
+    // Добавим тип, если его нет
+    query->exec("INSERT OR IGNORE INTO Type_comp_ingr(name) VALUES('" + type.toString() + "');");
+
+    //QString error = query->lastError().text();
+    //qDebug() << "Ошибка1: " << error;
+
+    int id_type = -1;
+    query->exec("SELECT id_type FROM Type_comp_ingr WHERE name = '" + type.toString() + "';");
+    if (query->next())
+        id_type = query->value(0).toInt();
+
+    //error = query->lastError().text();
+    //qDebug() << "Ошибка2: " << error << id_type;
+
+    for (int i = 0; i < ingredients.size(); i++)
+    {
+        //qDebug() << name.toString() << QString::number(id_type) << ingredients[i].toString() << counts[i].toString();
+        query->exec("INSERT INTO Compound_ingr(name_comp_ingr,id_type,name_ingr,count) VALUES('" + name.toString() + "'," + QString::number(id_type) + ",'" + ingredients[i].toString() + "'," + counts[i].toString() + ");");
+        //error = query->lastError().text();
+        //qDebug() << "Ошибка: " << error;
+    }
+
+    delete query;
+}
+
+void Database::show_rec_comp_ingr(const QVariant &name)
+{
+    query = new QSqlQuery(db);
+
+    ingr_for_comp_ingr = "";
+    count_ingr_for_comp_ingr = "";
+
+    if (query->exec("SELECT name_ingr,count FROM Compound_ingr WHERE name_comp_ingr = '" + name.toString() + "';"))
+    {
+        while (query->next())
+        {
+            ingr_for_comp_ingr.push_back(query->value(0).toString() + '@');
+            count_ingr_for_comp_ingr.push_back(query->value(1).toString() + '@');
+        }
+    }
+
+    //QString error = query->lastError().text();
+    //qDebug() << "Ошибка1: " << error;
+    //
+    //qDebug() << ingr_for_comp_ingr << count_ingr_for_comp_ingr;
+
+    delete query;
 }
 
 bool Database::user_exists(const QString& login)

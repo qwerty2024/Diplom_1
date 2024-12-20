@@ -14,5 +14,7 @@
         <file>images/bkg2.jpg</file>
         <file>images/bkg3.jpg</file>
         <file>ingrTable.qml</file>
+        <file>compIngrTable.qml</file>
+        <file>compIngrAdd.qml</file>
     </qresource>
 </RCC>
