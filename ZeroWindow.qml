@@ -83,7 +83,7 @@ ApplicationWindow {
     }
 
 
-    // кнопка для вызова нового окна и просмотра всех достпных ингридиентов
+    // кнопка для вызова нового окна и просмотра всех рецептов сложных ингридиентов
     Button {
         id: btn_complex_ingr
         anchors.bottom: parent.bottom
@@ -117,6 +117,44 @@ ApplicationWindow {
 
         onClicked: {
             dataBase.show_complex_ingr_table();
+        }
+    }
+
+
+    // кнопка для вызова нового окна и просмотра всех рецептов сложных ингридиентов
+    Button {
+        id: btn_cakes
+        anchors.bottom: parent.bottom
+        anchors.left: parent.left
+        anchors.leftMargin: 55
+        anchors.bottomMargin: 235
+        width: 250
+        height: 40
+
+        background: Rectangle{      // фон кнопки
+            property var normalColor: "#c7ecff"
+            property var hoveredColor: "#58e0ff"
+            property var pressedColor: "#20b2ff"
+
+            anchors.fill: parent
+            color: btn_cakes.pressed ? pressedColor :
+                   btn_cakes.hovered ? hoveredColor :
+                                      normalColor
+
+            border.color: "#01a3a4"
+            radius: 5
+
+            Text{
+                text: "Рецепты тортов"      // текст кнопки
+                color: btn_cakes.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
+                font.family: "Verdana";     // семейство шрифтов
+                font.pixelSize: 18;         // размер шрифта
+                anchors.centerIn: parent
+            }
+        }
+
+        onClicked: {
+            dataBase.show_rec_cakes();
         }
     }
 }

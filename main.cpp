@@ -4,6 +4,7 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QDebug>
 
 QQmlApplicationEngine *enginePtr;
 
@@ -14,6 +15,11 @@ int main(int argc, char *argv[])
     //qmlRegisterType<Database>("com.example", 1, 0, "MainController");
 
     QApplication app(argc, argv);
+
+    dataBase.path = app.applicationDirPath();
+
+    qDebug() << dataBase.path;
+
     QQmlApplicationEngine engine;
     enginePtr = &engine;
     QQmlContext *context = engine.rootContext();

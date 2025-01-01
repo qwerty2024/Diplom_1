@@ -16,5 +16,7 @@
         <file>ingrTable.qml</file>
         <file>compIngrTable.qml</file>
         <file>compIngrAdd.qml</file>
+        <file>recCakesTable.qml</file>
+        <file>recCakesAdd.qml</file>
     </qresource>
 </RCC>

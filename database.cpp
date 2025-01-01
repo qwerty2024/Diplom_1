@@ -58,11 +58,11 @@ Database::Database(QObject *parent) : QObject(parent)
 //                                    "estimation SMALLINT, "
 //                                    "comment TEXT, "
 //                                    "FOREIGN KEY (login) REFERENCES Users(login));");
-//
-//
 
-//
-//
+
+
+
+
 //    // Создаем таблицу - Заказанные торты
 //    query->exec("CREATE TABLE Ordered_cake(id_ordered_cake INT PRIMARY KEY AUTO_INCREMENT, "
 //                                    "id_cake INT NOT NULL, "
@@ -71,8 +71,7 @@ Database::Database(QObject *parent) : QObject(parent)
 //                                    "id_worker VARCHAR(255), "
 //                                    "FOREIGN KEY (id_order) REFERENCES Orders(id_order))"
 //                                    "FOREIGN KEY (id_worker) REFERENCES Users(login));");
-//
-//
+
 
 
     // Создаем таблицу - Тип сложного ингридиента
@@ -95,24 +94,25 @@ Database::Database(QObject *parent) : QObject(parent)
                                          "residue INTEGER NOT NULL, "
                                          "data VARCHAR(255) NOT NULL);");
 
-    //    // Создаем таблицу - Рецепты
-    //    query->exec("CREATE TABLE Recipe(id_recipe INT PRIMARY KEY AUTO_INCREMENT, "
-    //                                    "id_cake INT NOT NULL, "
-    //                                    "id_comp_ingr INT NOT NULL, "
-    //                                    "amount SMALLINT NOT NULL, "
-    //                                    "FOREIGN KEY (id_cake) REFERENCES Cakes(id_cake))"
-    //                                    "FOREIGN KEY (id_comp_ingr) REFERENCES Compound_ingr(id_comp_ingr));");
-    //
+    // Создаем таблицу - Tорты
+    query->exec("CREATE TABLE Cakes(id_cake INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                    "name VARCHAR(255) NOT NULL, "
+                                    "price INTEGER NOT NULL, "
+                                    "weight INTEGER NOT NULL, "
+                                    "description TEXT NOT NULL, "
+                                    "name_pic VARCHAR(255) NOT NULL, "
+                                    "sum_estimation INTEGER, "
+                                    "count_estimation INTEGER, "
+                                    "review TEXT);");
 
-    //    // Создаем таблицу - Tорты
-    //    query->exec("CREATE TABLE Cakes(id_cake INT PRIMARY KEY AUTO_INCREMENT, "
-    //                                    "name VARCHAR(255) NOT NULL, "
-    //                                    "price INT NOT NULL, "
-    //                                    "weight SMALLINT NOT NULL, "
-    //                                    "description TEXT, "
-    //                                    "name_pic VARCHAR(255) NOT NULL, "
-    //                                    "estimation SMALLINT NOT NULL, "
-    //                                    "review TEXT);");
+
+    // Создаем таблицу - Рецепты
+    query->exec("CREATE TABLE Recipe_cake(id_recipe INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                         "id_cake INTEGER NOT NULL, "
+                                         "id_comp_ingr INTEGER NOT NULL, "
+                                         "count INTEGER NOT NULL, "
+                                         "FOREIGN KEY (id_cake) REFERENCES Cakes(id_cake), "
+                                         "FOREIGN KEY (id_comp_ingr) REFERENCES Compound_ingr(id_comp_ingr));");
 
 
     //QString error = query->lastError().text();
@@ -245,6 +245,23 @@ void Database::show_complex_ingr_table()
     }
 }
 
+void Database::show_rec_cakes()
+{
+    update_cakes();
+
+    qDebug() << "создаем окно для сложных ингредиентов";
+
+    QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/recCakesTable.qml")));
+    QObject *window = component.create();
+
+    if (window == nullptr) {
+        qDebug() << "Ошибка при загрузке recCakesTable.qml:" << component.errors();
+    } else {
+        // Здесь вы можете настроить это окно, если нужно
+        window->setProperty("visible", true); // сделать окно видимым
+    }
+}
+
 void Database::open_add_complex_ingr()
 {
     qDebug() << "создаем окно для создания нового сложного ингредиента";
@@ -254,6 +271,21 @@ void Database::open_add_complex_ingr()
 
     if (window == nullptr) {
         qDebug() << "Ошибка при загрузке compIngrAdd.qml:" << component.errors();
+    } else {
+        // Здесь вы можете настроить это окно, если нужно
+        window->setProperty("visible", true); // сделать окно видимым
+    }
+}
+
+void Database::open_add_rec_cake()
+{
+    qDebug() << "создаем окно для создания нового рецепта торта";
+
+    QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/recCakesAdd.qml")));
+    QObject *window = component.create();
+
+    if (window == nullptr) {
+        qDebug() << "Ошибка при загрузке recCakesAdd.qml:" << component.errors();
     } else {
         // Здесь вы можете настроить это окно, если нужно
         window->setProperty("visible", true); // сделать окно видимым
@@ -447,6 +479,25 @@ void Database::update_comp_ingridients()
     delete query;
 }
 
+void Database::update_cakes()
+{
+    query = new QSqlQuery(db);
+
+    cakes = "";
+
+    if(query->exec("SELECT name FROM Cakes;"))
+    {
+        while (query->next())
+        {
+            cakes.push_back(query->value(0).toString() + '@');
+        }
+    }
+
+    qDebug() << cakes;
+
+    delete query;
+}
+
 void Database::openZeroWindow()
 {
     qDebug() << "создаем нулевое окно";
@@ -534,6 +585,41 @@ void Database::add_comp_ingr(const QVariant &name, const QVariant &type, const Q
     delete query;
 }
 
+void Database::add_rec_cake(const QVariant &name, const QVariant &description, const QVariant &cost, const QVariant &weight, const QVariant &pic, const QVariantList &comp_ingredients, const QVariantList &counts)
+{
+    query = new QSqlQuery(db);
+
+
+    // Добавим торт, если его нет
+    query->exec("INSERT OR IGNORE INTO Cakes(name,price,weight,description,name_pic) VALUES('" + name.toString() + "'," + cost.toString() + "," + weight.toString() + ",'" + description.toString() + "','" + pic.toString() + "');");
+
+    //QString error = query->lastError().text();
+    //qDebug() << "Ошибка1: " << error;
+
+    int id_cake = -1;
+    query->exec("SELECT id_cake FROM Cakes WHERE name = '" + name.toString() + "';");
+    if (query->next())
+        id_cake = query->value(0).toInt();
+
+    //error = query->lastError().text();
+    //qDebug() << "Ошибка2: " << error << id_type;
+
+    for (int i = 0; i < comp_ingredients.size(); i++)
+    {
+        int id_ingr = -1;
+        query->exec("SELECT id_comp_ingr FROM Compound_ingr WHERE name_comp_ingr = '" + comp_ingredients[i].toString() + "';");
+        if (query->next())
+            id_ingr = query->value(0).toInt();
+
+        //qDebug() << name.toString() << QString::number(id_type) << ingredients[i].toString() << counts[i].toString();
+        query->exec("INSERT INTO Recipe_cake(id_cake,id_comp_ingr,count) VALUES(" + QString::number(id_cake) + "," + QString::number(id_ingr) + "," + counts[i].toString() + ");");
+        //error = query->lastError().text();
+        //qDebug() << "Ошибка: " << error;
+    }
+
+    delete query;
+}
+
 void Database::show_rec_comp_ingr(const QVariant &name)
 {
     query = new QSqlQuery(db);
@@ -554,6 +640,62 @@ void Database::show_rec_comp_ingr(const QVariant &name)
     //qDebug() << "Ошибка1: " << error;
     //
     //qDebug() << ingr_for_comp_ingr << count_ingr_for_comp_ingr;
+
+    delete query;
+}
+
+void Database::show_rec_cake(const QVariant &name)
+{
+    curr_cake_name = name.toString();
+    curr_cake_weight = "";
+    curr_cake_price = "";
+    curr_cake_desc = "";
+    curr_cake_ingr = "";
+    curr_cake_count = "";
+    curr_cake_pic = "";
+    curr_cake_estim = "";
+    curr_cake_count_estim = "";
+    curr_cake_review = "";
+
+    query = new QSqlQuery(db);
+
+    QString id_cake = "";
+
+    if (query->exec("SELECT id_cake,price,weight,description,name_pic,sum_estimation,count_estimation,review FROM Cakes WHERE name = '" + name.toString() + "';"))
+    {
+        if (query->next())
+        {
+            id_cake = query->value(0).toString();
+            curr_cake_price = query->value(1).toString();
+            curr_cake_weight = query->value(2).toString();
+            curr_cake_desc = query->value(3).toString();
+            curr_cake_pic = query->value(4).toString();
+            curr_cake_estim = query->value(5).toString();
+            curr_cake_count_estim = query->value(6).toString();
+            curr_cake_review = query->value(7).toString();
+        }
+    }
+
+    if (query->exec("SELECT rc.count, ci.name_comp_ingr FROM Recipe_cake rc JOIN Compound_ingr ci ON rc.id_comp_ingr = ci.id_comp_ingr WHERE rc.id_cake = " + id_cake + ";"))
+    {
+        while (query->next())
+        {
+            curr_cake_count.push_back(query->value(0).toString() + '@');
+            curr_cake_ingr.push_back(query->value(1).toString() + '@');
+        }
+    }
+
+    qDebug() << curr_cake_name;
+    qDebug() << id_cake;
+    qDebug() << curr_cake_weight;
+    qDebug() << curr_cake_price;
+    qDebug() << curr_cake_desc;
+    qDebug() << curr_cake_ingr;
+    qDebug() << curr_cake_count;
+    qDebug() << curr_cake_pic;
+    qDebug() << curr_cake_estim;
+    qDebug() << curr_cake_count_estim;
+    qDebug() << curr_cake_review;
 
     delete query;
 }
