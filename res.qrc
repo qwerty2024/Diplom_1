@@ -18,5 +18,7 @@
         <file>compIngrAdd.qml</file>
         <file>recCakesTable.qml</file>
         <file>recCakesAdd.qml</file>
+        <file>showCake.qml</file>
+        <file>showOrderForWorker.qml</file>
     </qresource>
 </RCC>

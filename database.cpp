@@ -8,6 +8,7 @@
 #include <string>
 #include <unordered_set>
 #include <QDebug>
+#include <QDateTime>
 
 extern QQmlApplicationEngine *enginePtr;
 
@@ -50,30 +51,6 @@ Database::Database(QObject *parent) : QObject(parent)
     }
 
 
-//    // Создаем таблицу - Заказы
-//    query->exec("CREATE TABLE Orders(id_order INT PRIMARY KEY AUTO_INCREMENT, "
-//                                    "login VARCHAR(255) NOT NULL, "
-//                                    "date VARCHAR(255) NOT NULL, "
-//                                    "status SMALLINT NOT NULL DEFAULT '0', "
-//                                    "estimation SMALLINT, "
-//                                    "comment TEXT, "
-//                                    "FOREIGN KEY (login) REFERENCES Users(login));");
-
-
-
-
-
-//    // Создаем таблицу - Заказанные торты
-//    query->exec("CREATE TABLE Ordered_cake(id_ordered_cake INT PRIMARY KEY AUTO_INCREMENT, "
-//                                    "id_cake INT NOT NULL, "
-//                                    "quantity SMALLINT NOT NULL, "
-//                                    "id_order INT NOT NULL, "
-//                                    "id_worker VARCHAR(255), "
-//                                    "FOREIGN KEY (id_order) REFERENCES Orders(id_order))"
-//                                    "FOREIGN KEY (id_worker) REFERENCES Users(login));");
-
-
-
     // Создаем таблицу - Тип сложного ингридиента
     query->exec("CREATE TABLE Type_comp_ingr(id_type INTEGER PRIMARY KEY AUTOINCREMENT, "
                                             "name VARCHAR(255) NOT NULL);");
@@ -113,6 +90,30 @@ Database::Database(QObject *parent) : QObject(parent)
                                          "count INTEGER NOT NULL, "
                                          "FOREIGN KEY (id_cake) REFERENCES Cakes(id_cake), "
                                          "FOREIGN KEY (id_comp_ingr) REFERENCES Compound_ingr(id_comp_ingr));");
+
+
+    // Создаем таблицу - Заказы
+    query->exec("CREATE TABLE Orders(id_order INTEGER PRIMARY KEY AUTOINCREMENT, "
+                                    "login VARCHAR(255) NOT NULL, "
+                                    "id_cake INTEGER NOT NULL, "
+                                    "date VARCHAR(255) NOT NULL, "
+                                    "status SMALLINT NOT NULL DEFAULT '0', "
+                                    "estimation SMALLINT, "
+                                    "comment TEXT, "
+                                    "id_worker VARCHAR(255), "
+                                    "FOREIGN KEY (login) REFERENCES Users(login), "
+                                    "FOREIGN KEY (id_cake) REFERENCES Cakes(id_cake));");
+
+
+    //    // Создаем таблицу - Заказанные торты
+    //    query->exec("CREATE TABLE Ordered_cake(id_ordered_cake INT PRIMARY KEY AUTO_INCREMENT, "
+    //                                    "id_cake INT NOT NULL, "
+    //                                    "quantity SMALLINT NOT NULL, "
+    //                                    "id_order INT NOT NULL, "
+    //                                    "id_worker VARCHAR(255), "
+    //                                    "FOREIGN KEY (id_order) REFERENCES Orders(id_order))"
+    //                                    "FOREIGN KEY (id_worker) REFERENCES Users(login));");
+
 
 
     //QString error = query->lastError().text();
@@ -498,6 +499,28 @@ void Database::update_cakes()
     delete query;
 }
 
+void Database::update_cakes_and_pic()
+{
+    query = new QSqlQuery(db);
+
+    cakes = "";
+    pics = "";
+
+    if(query->exec("SELECT name,name_pic FROM Cakes;"))
+    {
+        while (query->next())
+        {
+            cakes.push_back(query->value(0).toString() + '@');
+            pics.push_back(query->value(1).toString() + '@');
+        }
+    }
+
+    qDebug() << cakes;
+    qDebug() << pics;
+
+    delete query;
+}
+
 void Database::openZeroWindow()
 {
     qDebug() << "создаем нулевое окно";
@@ -588,7 +611,6 @@ void Database::add_comp_ingr(const QVariant &name, const QVariant &type, const Q
 void Database::add_rec_cake(const QVariant &name, const QVariant &description, const QVariant &cost, const QVariant &weight, const QVariant &pic, const QVariantList &comp_ingredients, const QVariantList &counts)
 {
     query = new QSqlQuery(db);
-
 
     // Добавим торт, если его нет
     query->exec("INSERT OR IGNORE INTO Cakes(name,price,weight,description,name_pic) VALUES('" + name.toString() + "'," + cost.toString() + "," + weight.toString() + ",'" + description.toString() + "','" + pic.toString() + "');");
@@ -696,6 +718,146 @@ void Database::show_rec_cake(const QVariant &name)
     qDebug() << curr_cake_estim;
     qDebug() << curr_cake_count_estim;
     qDebug() << curr_cake_review;
+
+    delete query;
+}
+
+void Database::show_cake(const QVariant &name)
+{
+    show_rec_cake(name);
+
+    qDebug() << "открываем окно просмотра тортика";
+
+    QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/showCake.qml")));
+    QObject *window = component.create();
+
+    if (window == nullptr) {
+        qDebug() << "Ошибка при загрузке showCake.qml:" << component.errors();
+    } else {
+        // Здесь вы можете настроить это окно, если нужно
+        window->setProperty("visible", true); // сделать окно видимым
+    }
+}
+
+void Database::order_cake(const QVariant &name)
+{
+    query = new QSqlQuery(db);
+
+    //qDebug() << name.toString();
+
+    int id_cake = -1;
+    query->exec("SELECT id_cake FROM Cakes WHERE name = '" + name.toString() + "';");
+    if (query->next())
+        id_cake = query->value(0).toInt();
+
+    //QString error = query->lastError().text();
+    //qDebug() << "Ошибка при добавлении заказа id тортика: " << error;
+
+    QDateTime now = QDateTime::currentDateTime();
+    QString d = now.toString("yyyy-MM-dd HH:mm:ss");
+
+    // Добавим торт, если его нет
+    query->exec("INSERT INTO Orders(login,id_cake,date) VALUES('" + login + "'," + QString::number(id_cake) + ",'" + d + "');");
+
+    //error = query->lastError().text();
+    //qDebug() << "Ошибка при добавлении заказа: " << error;
+
+    delete query;
+}
+
+void Database::update_orders()
+{
+    query = new QSqlQuery(db);
+
+    id_orders = "";
+    login_orders = "";
+    date_orders = "";
+    name_orders = "";
+    status_orders = "";
+
+    QString id_cake = "";
+
+    //if (query->exec("SELECT id_cake FROM Orders;"))
+    //{
+    //    while (query->next())
+    //    {
+    //        qDebug() << query->value(0).toString();
+    //    }
+    //}
+
+
+    if (query->exec("SELECT Orders.id_order,Orders.login,Orders.date,Cakes.name,Orders.status FROM Orders JOIN Cakes ON Orders.id_cake = Cakes.id_cake WHERE Orders.status != 6;"))
+    {
+        while (query->next())
+        {
+            id_orders.push_back(query->value(0).toString() + '@');
+            login_orders.push_back(query->value(1).toString() + '@');
+            date_orders.push_back(query->value(2).toString() + '@');
+            name_orders.push_back(query->value(3).toString() + '@');
+            status_orders.push_back(query->value(4).toString() + '@');
+        }
+    }
+
+    //QString error = query->lastError().text();
+    //qDebug() << "Ошибка при обновлении заказов: " << error;
+
+    qDebug() << id_orders;
+    qDebug() << login_orders;
+    qDebug() << date_orders;
+    qDebug() << name_orders;
+    qDebug() << status_orders;
+
+    delete query;
+}
+
+void Database::enter_order(const QVariant &id)
+{
+    QString id_ord = id.toString();
+    qDebug() << "принят заказ с id: " << id_ord;
+    curr_id_order = id_ord;
+
+    query = new QSqlQuery(db);
+
+    curr_status_order = "";
+
+    //int status = -1;
+    query->exec("SELECT status FROM Orders WHERE id_order = " + id_ord + ";");
+    if (query->next())
+        curr_status_order = query->value(0).toString();
+
+    qDebug() << "curr_status_order: " << curr_status_order;
+
+    //if (curr_status_order == "0")
+    //    query->exec("UPDATE Orders SET status = 1 WHERE id_order = " + id_ord + ";");
+
+    delete query;
+
+    QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/showOrderForWorker.qml")));
+    QObject *window = component.create();
+
+    if (window == nullptr) {
+        qDebug() << "Ошибка при загрузке showOrderForWorker.qml:" << component.errors();
+    } else {
+        // Здесь вы можете настроить это окно, если нужно
+        window->setProperty("visible", true); // сделать окно видимым
+    }
+}
+
+void Database::change_status_order(const QVariant &st)
+{
+    QString stat = st.toString();
+    qDebug() << "изменить статус на : " << stat;
+
+    query = new QSqlQuery(db);
+
+    query->exec("SELECT status FROM Orders WHERE id_order = " + curr_id_order + ";");
+    if (query->next())
+        curr_status_order = query->value(0).toString();
+
+    if (stat > curr_status_order)
+    {
+        query->exec("UPDATE Orders SET status = " + stat + ", login = '" + login + "' WHERE id_order = " + curr_id_order + ";");
+    }
 
     delete query;
 }

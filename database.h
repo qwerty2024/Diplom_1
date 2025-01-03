@@ -36,6 +36,7 @@ public:
     void update_ingridients();
     Q_INVOKABLE void update_comp_ingridients();
     Q_INVOKABLE void update_cakes();
+    Q_INVOKABLE void update_cakes_and_pic();
 
     void openZeroWindow();
     void openOneWindow();
@@ -85,8 +86,12 @@ public:
     QString count_ingr_for_comp_ingr = "";
     Q_PROPERTY(QString m_count_ingr_for_comp_ingr MEMBER count_ingr_for_comp_ingr CONSTANT)
 
+    // для тортиков
     QString cakes = "";
     Q_PROPERTY(QString m_cakes MEMBER cakes CONSTANT)
+
+    QString pics = "";
+    Q_PROPERTY(QString m_pics MEMBER pics CONSTANT)
 
     QString curr_cake_name = "";
     Q_PROPERTY(QString m_curr_cake_name MEMBER curr_cake_name CONSTANT)
@@ -118,6 +123,28 @@ public:
     QString curr_cake_review = "";
     Q_PROPERTY(QString m_curr_cake_review MEMBER curr_cake_review CONSTANT)
 
+    // для заказов
+    QString id_orders = "";
+    Q_PROPERTY(QString m_id_orders MEMBER id_orders CONSTANT)
+
+    QString login_orders = "";
+    Q_PROPERTY(QString m_login_orders MEMBER login_orders CONSTANT)
+
+    QString date_orders = "";
+    Q_PROPERTY(QString m_date_orders MEMBER date_orders CONSTANT)
+
+    QString name_orders = "";
+    Q_PROPERTY(QString m_name_orders MEMBER name_orders CONSTANT)
+
+    QString status_orders = "";
+    Q_PROPERTY(QString m_status_orders MEMBER status_orders CONSTANT)
+
+    QString curr_status_order = "";
+    Q_PROPERTY(QString m_curr_status_order MEMBER curr_status_order CONSTANT)
+
+    QString curr_id_order = "";
+    Q_PROPERTY(QString m_curr_id_order MEMBER curr_id_order CONSTANT)
+
     virtual ~Database() {}
 
 public slots:
@@ -125,7 +152,11 @@ public slots:
     void add_rec_cake(const QVariant &name, const QVariant &description, const QVariant &cost, const QVariant &weight, const QVariant &pic, const QVariantList &comp_ingredients, const QVariantList &counts);
     void show_rec_comp_ingr(const QVariant &name);
     void show_rec_cake(const QVariant &name);
-
+    void show_cake(const QVariant &name);
+    void order_cake(const QVariant &name);
+    void update_orders();
+    void enter_order(const QVariant &id);
+    void change_status_order(const QVariant &st);
 };
 
 #endif // DATABASE_H
