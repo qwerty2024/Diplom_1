@@ -6,9 +6,9 @@ import QtQuick.Window 2.5
 ApplicationWindow {
     id: recCakesWindow
     visible: true
-    width: 800
-    height: 700
-    title: "Рецепты тортов"
+    width: 700
+    height: 750
+    title: "Рецепты дессертов"
 
     function update_show_rec_cake()
     {
@@ -70,13 +70,27 @@ ApplicationWindow {
         loadData()
     }
 
+    Rectangle {
+        width: 370
+        height: 730
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 300 // фиксированное расстояние от левой грани
+        anchors.topMargin: 0
+
+        border.color: "black"
+    }
+
     Text{
         id: name_cake_curr
         text: "Название: "
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450 // фиксированное расстояние от левой грани
+        anchors.leftMargin: 320 // фиксированное расстояние от левой грани
         anchors.topMargin: 20
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -84,8 +98,10 @@ ApplicationWindow {
         text: "Вес: "
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450 // фиксированное расстояние от левой грани
+        anchors.leftMargin: 320 // фиксированное расстояние от левой грани
         anchors.topMargin: 50
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -93,8 +109,10 @@ ApplicationWindow {
         text: "Цена: "
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450 // фиксированное расстояние от левой грани
+        anchors.leftMargin: 320 // фиксированное расстояние от левой грани
         anchors.topMargin: 80
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -102,8 +120,10 @@ ApplicationWindow {
         text: "Описание: "
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450 // фиксированное расстояние от левой грани
+        anchors.leftMargin: 320 // фиксированное расстояние от левой грани
         anchors.topMargin: 110
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -111,8 +131,10 @@ ApplicationWindow {
         text: "Оценка: "
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450 // фиксированное расстояние от левой грани
+        anchors.leftMargin: 320 // фиксированное расстояние от левой грани
         anchors.topMargin: 200
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -120,8 +142,10 @@ ApplicationWindow {
         text: "Отзывы: "
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450 // фиксированное расстояние от левой грани
+        anchors.leftMargin: 320 // фиксированное расстояние от левой грани
         anchors.topMargin: 230
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -129,8 +153,10 @@ ApplicationWindow {
         text: "Ингредиенты: "
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450 // фиксированное расстояние от левой грани
+        anchors.leftMargin: 320 // фиксированное расстояние от левой грани
         anchors.topMargin: 260
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Image{
@@ -139,14 +165,14 @@ ApplicationWindow {
         height: 300
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450 // фиксированное расстояние от левой грани
-        anchors.topMargin: 330
+        anchors.leftMargin: 335 // фиксированное расстояние от левой грани
+        anchors.topMargin: 400
         //source: "pic_cakes/cake_1.jpg"
     }
 
     Rectangle {
-        width: 440
-        height: 400
+        width: 300
+        height: 600
 
         ListModel {
             id: dataModel
@@ -167,8 +193,26 @@ ApplicationWindow {
                 property real lastClickTime: 0
                 property int selectedRow: -1
 
+                headerDelegate: Item {
+                    width: view.columnWidth
+                    height: 40
+
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        color: "lightgray"
+                        border.color: "black"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: styleData.value
+                            font.pixelSize: 16
+                        }
+                    }
+                }
+
                 TableViewColumn {
-                    width: 200
+                    width: 277
                     title: "Название"
                     role: "name"
                 }
@@ -186,6 +230,9 @@ ApplicationWindow {
                             text: styleData.value
                             renderType: Text.NativeRendering
                             anchors.verticalCenter: parent.verticalCenter
+                            anchors.centerIn: parent
+                            font.family: "Verdana"
+                            font.pixelSize: 16
                         }
 
                         MouseArea {

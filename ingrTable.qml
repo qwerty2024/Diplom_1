@@ -7,7 +7,7 @@ ApplicationWindow {
     visible: true
     width: 450
     height: 700
-    title: "Базовые ингридиенты"
+    title: "Базовые ингредиенты"
 
     function loadData() {
         var m_ingredients = dataBase.m_ingredients.split("@");
@@ -52,18 +52,36 @@ ApplicationWindow {
                 property real lastClickTime: 0
                 property int selectedRow: -1
 
+                headerDelegate: Item {
+                    width: view.columnWidth
+                    height: 40
+
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        color: "lightgray"
+                        border.color: "black"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: styleData.value
+                            font.pixelSize: 16
+                        }
+                    }
+                }
+
                 TableViewColumn {
-                    width: 130
-                    title: "Ингредиенты"
+                    width: 140
+                    title: "Ингредиент"
                     role: "ingredients"
                 }
                 TableViewColumn {
-                    width: 130
+                    width: 140
                     title: "Остаток"
                     role: "residue"
                 }
                 TableViewColumn {
-                    width: 130
+                    width: 140
                     title: "Годен до:"
                     role: "expiration_date"
                 }
@@ -81,6 +99,9 @@ ApplicationWindow {
                             text: styleData.value
                             renderType: Text.NativeRendering
                             anchors.verticalCenter: parent.verticalCenter
+                            anchors.centerIn: parent
+                            font.family: "Verdana"
+                            font.pixelSize: 16
                         }
 
                         MouseArea {

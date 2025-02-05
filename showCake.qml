@@ -58,13 +58,27 @@ ApplicationWindow {
         edit.text = dataBase.m_comments_for_cake
     }
 
+    Rectangle {
+        width: 300
+        height: 600
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 20 // фиксированное расстояние от левой грани
+        anchors.topMargin: 10
+
+        border.color: "black"
+    }
+
     Text{
         id: name_cake_curr
-        text: "Название: "
+        text: "Название: " + dataBase.m_curr_cake_name
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 30 // фиксированное расстояние от левой грани
         anchors.topMargin: 20
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -74,6 +88,8 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 30 // фиксированное расстояние от левой грани
         anchors.topMargin: 50
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -83,6 +99,8 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 30 // фиксированное расстояние от левой грани
         anchors.topMargin: 80
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -92,16 +110,9 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 30 // фиксированное расстояние от левой грани
         anchors.topMargin: 110
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
-
-    //Text{
-    //    id: name_estim_curr
-    //    text: "Оценка: "
-    //    anchors.top: parent.top
-    //    anchors.left: parent.left
-    //    anchors.leftMargin: 30 // фиксированное расстояние от левой грани
-    //    anchors.topMargin: 200
-    //}
 
     Text{
         id: name_review_curr
@@ -110,6 +121,8 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 30 // фиксированное расстояние от левой грани
         anchors.topMargin: 370
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -118,7 +131,9 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 30 // фиксированное расстояние от левой грани
-        anchors.topMargin: 260
+        anchors.topMargin: 220
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Image{
@@ -134,20 +149,20 @@ ApplicationWindow {
 
     // поле вывода отзывов
     Rectangle {
-        width: 200;
+        width: 280;
         height: 200;
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 30
         anchors.topMargin: 400
 
-        border.color: "grey"
-        border.width: 2
+        border.color: "black"
+        border.width: 1
 
         Flickable {
             id: flick
 
-            width: 190;
+            width: 275;
             height: 190;
             anchors.top: parent.top
             anchors.left: parent.left
@@ -176,6 +191,9 @@ ApplicationWindow {
                 focus: true
                 wrapMode: TextEdit.Wrap
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
+
+                font.family: "Verdana"
+                font.pixelSize: 16
 
                 Connections {
                     target: edit

@@ -4,13 +4,25 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: compIngrAddWindow
     visible: true
-    width: 500
-    height: 380
+    width: 600
+    height: 370
     title: "Добавить рецепт сложного ингредиента"
 
     // Массивы для хранения значений
     property var ingredients: []
     property var counts: []
+
+    Rectangle {
+        width: 300
+        height: 350
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 290 // фиксированное расстояние от левой грани
+        anchors.topMargin: 0
+
+        border.color: "black"
+    }
 
     Text{
         id: name_comp
@@ -19,6 +31,8 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 300 // фиксированное расстояние от левой грани
         anchors.topMargin: 20
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -28,6 +42,8 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 300 // фиксированное расстояние от левой грани
         anchors.topMargin: 50
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -39,6 +55,8 @@ ApplicationWindow {
         anchors.topMargin: 90
         wrapMode: Text.WordWrap
         width: 300 // фиксированная ширина текста
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     // поле ввода названия
@@ -46,7 +64,7 @@ ApplicationWindow {
         id: input_name
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 20
         width: 230
         height: 35
@@ -67,7 +85,7 @@ ApplicationWindow {
         id: input_type
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 70
         width: 230
         height: 35
@@ -88,7 +106,7 @@ ApplicationWindow {
         id: input_name_ingr
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 130
         width: 230
         height: 35
@@ -102,7 +120,7 @@ ApplicationWindow {
         id: input_count_ingr
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 180
         width: 230
         height: 35
@@ -116,7 +134,7 @@ ApplicationWindow {
         id: btn_add_ingr_rec
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 230
         width: 230
         height: 40
@@ -171,7 +189,7 @@ ApplicationWindow {
         id: btn_add_comp_ingr_final
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 280
         width: 230
         height: 40

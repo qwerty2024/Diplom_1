@@ -98,6 +98,8 @@ ApplicationWindow {
                         renderType: Text.NativeRendering
                         font.bold: true
                         text: section
+                        font.family: "Verdana"
+                        font.pixelSize: 16
                     }
                 }
 
@@ -113,6 +115,8 @@ ApplicationWindow {
                         anchors.centerIn: parent
                         renderType: Text.NativeRendering
                         text: model.text
+                        font.family: "Verdana"
+                        font.pixelSize: 16
                     }
                 }
             }

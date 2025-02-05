@@ -6,7 +6,7 @@ ApplicationWindow {
     visible: true
     width: 800
     height: 600
-    title: "ЗАКАЗЧИК"
+    //title: "ЗАКАЗЧИК"
 
     flags: Qt.Window | Qt.FramelessWindowHint // Отключаем обрамление окна
 

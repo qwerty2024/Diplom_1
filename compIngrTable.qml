@@ -5,8 +5,8 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: compIngrWindow
     visible: true
-    width: 700
-    height: 600
+    width: 750
+    height: 550
     title: "Рецепты сложных ингредиентов"
 
     function update_show_rec()
@@ -40,6 +40,18 @@ ApplicationWindow {
         }
     }
 
+    Rectangle {
+        width: 300
+        height: 400
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 440 // фиксированное расстояние от левой грани
+        anchors.topMargin: 0
+
+        border.color: "black"
+    }
+
     Text{
         id: name_comp_1
         text: "Название: "
@@ -47,6 +59,8 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 450 // фиксированное расстояние от левой грани
         anchors.topMargin: 20
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -56,6 +70,8 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 450 // фиксированное расстояние от левой грани
         anchors.topMargin: 50
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -67,7 +83,10 @@ ApplicationWindow {
         anchors.topMargin: 90
         wrapMode: Text.WordWrap
         width: 300 // фиксированная ширина текста
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
+
 
 
     Rectangle {
@@ -98,13 +117,31 @@ ApplicationWindow {
                 property real lastClickTime: 0
                 property int selectedRow: -1
 
+                headerDelegate: Item {
+                    width: view.columnWidth
+                    height: 40
+
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        color: "lightgray"
+                        border.color: "black"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: styleData.value
+                            font.pixelSize: 16
+                        }
+                    }
+                }
+
                 TableViewColumn {
-                    width: 200
+                    width: 210
                     title: "Тип"
                     role: "type"
                 }
                 TableViewColumn {
-                    width: 200
+                    width: 210
                     title: "Название"
                     role: "name"
                 }
@@ -122,6 +159,9 @@ ApplicationWindow {
                             text: styleData.value
                             renderType: Text.NativeRendering
                             anchors.verticalCenter: parent.verticalCenter
+                            anchors.centerIn: parent
+                            font.family: "Verdana"
+                            font.pixelSize: 16
                         }
 
                         MouseArea {

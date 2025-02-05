@@ -4,8 +4,8 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: recCakesAddWindow
     visible: true
-    width: 700
-    height: 800
+    width: 650
+    height: 620
     title: "Конструктор дессертов"
 
     property var comp_ingrts: []
@@ -20,17 +20,24 @@ ApplicationWindow {
         comp_ingrts = dataBase.m_comp_ingr.split("@");
 
         comp_ingrts.pop();
-
-        //for (var i = 0; i < comp_ingrts.length; i++)
-        //{
-        //    console.log(comp_ingrts[i]);
-        //}
     }
 
 
     Component.onCompleted:
     {
         loadData()
+    }
+
+    Rectangle {
+        width: 340
+        height: 600
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 290 // фиксированное расстояние от левой грани
+        anchors.topMargin: 0
+
+        border.color: "black"
     }
 
     Text{
@@ -40,43 +47,20 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 300
         anchors.topMargin: 20
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
         id: info_cake
-        text: "Описание: "
+        text: "Комментарий: "
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 300
         anchors.topMargin: 50
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
-
-    //Text{
-    //    id: cost_cake
-    //    text: "Цена: "
-    //    anchors.top: parent.top
-    //    anchors.left: parent.left
-    //    anchors.leftMargin: 300
-    //    anchors.topMargin: 350
-    //}
-    //
-    //Text{
-    //    id: weight_cake
-    //    text: "Вес: "
-    //    anchors.top: parent.top
-    //    anchors.left: parent.left
-    //    anchors.leftMargin: 300
-    //    anchors.topMargin: 390
-    //}
-    //
-    //Text{
-    //    id: pic_cake
-    //    text: "Картинка: "
-    //    anchors.top: parent.top
-    //    anchors.left: parent.left
-    //    anchors.leftMargin: 300
-    //    anchors.topMargin: 430
-    //}
 
     Text{
         id: comp_ingrts_text
@@ -84,9 +68,11 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 300
-        anchors.topMargin: 480
+        anchors.topMargin: 280
         wrapMode: Text.WordWrap
         width: 300
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     // поле ввода названия
@@ -94,9 +80,9 @@ ApplicationWindow {
         id: input_name
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 20
-        width: 200
+        width: 250
         height: 35
         placeholderText: "Введите название"
         font.family: "Verdana"
@@ -110,22 +96,32 @@ ApplicationWindow {
         }
     }
 
+    Text{
+        text: "Пожелания к заказу: "
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 25
+        anchors.topMargin: 60
+        font.family: "Verdana"
+        font.pixelSize: 16
+    }
+
     // поле ввода описания
     Rectangle {
-        width: 200;
+        width: 250;
         height: 200;
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.topMargin: 70
+        anchors.leftMargin: 25
+        anchors.topMargin: 90
 
-        border.color: "grey"
-        border.width: 2
+        border.color: "black"
+        border.width: 1
 
         Flickable {
             id: flick
 
-            width: 190;
+            width: 240;
             height: 190;
             anchors.top: parent.top
             anchors.left: parent.left
@@ -155,6 +151,9 @@ ApplicationWindow {
                 wrapMode: TextEdit.Wrap
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
 
+                font.family: "Verdana"
+                font.pixelSize: 16
+
                 Connections {
                     target: edit
                     onTextChanged: {
@@ -165,74 +164,23 @@ ApplicationWindow {
         }
     }
 
-    // стоимость
-    //TextField {
-    //    id: input_cost
-    //    anchors.top: parent.top
-    //    anchors.left: parent.left
-    //    anchors.leftMargin: 55
-    //    anchors.topMargin: 300
-    //    width: 200
-    //    height: 35
-    //    placeholderText: "Введите стоимость"
-    //    font.family: "Verdana"
-    //    font.pixelSize: 16
-    //
-    //    Connections {
-    //        target: input_cost
-    //        onTextChanged: {
-    //            cost_cake.text = "Цена: " + input_cost.text;
-    //        }
-    //    }
-    //}
-
-    //TextField {
-    //    id: input_weight
-    //    anchors.top: parent.top
-    //    anchors.left: parent.left
-    //    anchors.leftMargin: 55
-    //    anchors.topMargin: 350
-    //    width: 200
-    //    height: 35
-    //    placeholderText: "Введите вес"
-    //    font.family: "Verdana"
-    //    font.pixelSize: 16
-    //
-    //    Connections {
-    //        target: input_weight
-    //        onTextChanged: {
-    //            weight_cake.text = "Вес: " + input_weight.text;
-    //        }
-    //    }
-    //}
-
-    //TextField {
-    //    id: input_pic
-    //    anchors.top: parent.top
-    //    anchors.left: parent.left
-    //    anchors.leftMargin: 55
-    //    anchors.topMargin: 390
-    //    width: 200
-    //    height: 35
-    //    placeholderText: "Название картинки"
-    //    font.family: "Verdana"
-    //    font.pixelSize: 16
-    //
-    //    Connections {
-    //        target: input_pic
-    //        onTextChanged: {
-    //            pic_cake.text = "Картинка: " + input_pic.text;
-    //        }
-    //    }
-    //}
+    Text{
+        text: "Добавьте желаемые\nингредиенты: "
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 25
+        anchors.topMargin: 355
+        font.family: "Verdana"
+        font.pixelSize: 16
+    }
 
     ComboBox {
         id: comboBox_1
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.topMargin: 440
-        width: 200
+        anchors.leftMargin: 25
+        anchors.topMargin: 400
+        width: 250
         height: 35
         font.family: "Verdana"
         font.pixelSize: 16
@@ -245,9 +193,9 @@ ApplicationWindow {
         id: input_count
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.topMargin: 490
-        width: 200
+        anchors.leftMargin: 25
+        anchors.topMargin: 450
+        width: 250
         height: 35
         placeholderText: "Введите количество"
         font.family: "Verdana"
@@ -259,9 +207,9 @@ ApplicationWindow {
         id: btn_add_comp_ingr_rec
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.topMargin: 540
-        width: 200
+        anchors.leftMargin: 25
+        anchors.topMargin: 500
+        width: 250
         height: 40
 
         background: Rectangle{      // фон кнопки
@@ -315,9 +263,9 @@ ApplicationWindow {
         id: btn_add_rec
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.topMargin: 590
-        width: 200
+        anchors.leftMargin: 25
+        anchors.topMargin: 550
+        width: 250
         height: 40
 
         background: Rectangle{      // фон кнопки

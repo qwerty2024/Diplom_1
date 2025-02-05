@@ -6,8 +6,8 @@ import QtQuick.Window 2.5
 ApplicationWindow {
     id: recCakesWindow
     visible: true
-    width: 750
-    height: 450
+    width: 1000
+    height: 400
     title: dataBase.m_my_login
 
     property int rowIndex: -1
@@ -52,8 +52,10 @@ ApplicationWindow {
         text: "Мой отзыв: "
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 500
+        anchors.leftMargin: 770
         anchors.topMargin: 30
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -61,15 +63,17 @@ ApplicationWindow {
         text: "Моя оценка: "
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 500
+        anchors.leftMargin: 770
         anchors.topMargin: 270
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     ComboBox {
         id: comboBox
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 500
+        anchors.leftMargin: 770
         anchors.topMargin: 300
         width: 200
         height: 35
@@ -86,11 +90,11 @@ ApplicationWindow {
         height: 200;
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 500
+        anchors.leftMargin: 770
         anchors.topMargin: 50
 
-        border.color: "grey"
-        border.width: 2
+        border.color: "black"
+        border.width: 1
 
         Flickable {
             id: flick
@@ -125,6 +129,9 @@ ApplicationWindow {
                 wrapMode: TextEdit.Wrap
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
 
+                font.family: "Verdana"
+                font.pixelSize: 16
+
                 Connections {
                     target: edit
                     onTextChanged: {
@@ -136,7 +143,7 @@ ApplicationWindow {
     }
 
     Rectangle {
-        width: 460
+        width: 760
         height: 400
 
         ListModel {
@@ -163,23 +170,41 @@ ApplicationWindow {
                 property real lastClickTime: 0
                 property int selectedRow: -1
 
+                headerDelegate: Item {
+                    width: view.columnWidth
+                    height: 40
+
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        color: "lightgray"
+                        border.color: "black"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: styleData.value
+                            font.pixelSize: 16
+                        }
+                    }
+                }
+
                 TableViewColumn {
-                    width: 100
+                    width: 160
                     title: "Идентификатор"
                     role: "id"
                 }
                 TableViewColumn {
-                    width: 140
+                    width: 200
                     title: "Дата"
                     role: "date"
                 }
                 TableViewColumn {
-                    width: 100
+                    width: 220
                     title: "Название"
                     role: "name"
                 }
                 TableViewColumn {
-                    width: 100
+                    width: 160
                     title: "Статус"
                     role: "status"
                 }
@@ -197,6 +222,9 @@ ApplicationWindow {
                             text: styleData.value
                             renderType: Text.NativeRendering
                             anchors.verticalCenter: parent.verticalCenter
+                            anchors.centerIn: parent
+                            font.family: "Verdana"
+                            font.pixelSize: 16
                         }
 
                         MouseArea {
@@ -233,7 +261,7 @@ ApplicationWindow {
         id: btn_otz
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 500
+        anchors.leftMargin: 770
         anchors.topMargin: 350
         width: 200
         height: 40

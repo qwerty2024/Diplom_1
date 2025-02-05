@@ -6,9 +6,9 @@ import QtQuick.Window 2.5
 ApplicationWindow {
     id: twoWindow
     visible: true
-    width: 640
+    width: 740
     height: 480
-    title: "ПОВАР"
+    title: "Изготовитель (" + dataBase.m_my_login + ")"
 
     property var id_curr_order
 
@@ -36,7 +36,7 @@ ApplicationWindow {
     }
 
     Rectangle {
-        width: 600
+        width: 740
         height: 400
 
         ListModel {
@@ -58,6 +58,24 @@ ApplicationWindow {
                 property real lastClickTime: 0
                 property int selectedRow: -1
 
+                headerDelegate: Item {
+                    width: view.columnWidth
+                    height: 40
+
+                    Rectangle {
+                        width: parent.width
+                        height: parent.height
+                        color: "lightgray"
+                        border.color: "black"
+
+                        Text {
+                            anchors.centerIn: parent
+                            text: styleData.value
+                            font.pixelSize: 16
+                        }
+                    }
+                }
+
                 TableViewColumn {
                     width: 100
                     title: "ID заказа"
@@ -71,14 +89,14 @@ ApplicationWindow {
                 }
 
                 TableViewColumn {
-                    width: 140
+                    width: 200
                     title: "Дата"
                     role: "date"
                 }
 
                 TableViewColumn {
-                    width: 100
-                    title: "Название торта"
+                    width: 220
+                    title: "Название дессерта"
                     role: "name_cake"
                 }
 
@@ -101,6 +119,9 @@ ApplicationWindow {
                             text: styleData.value
                             renderType: Text.NativeRendering
                             anchors.verticalCenter: parent.verticalCenter
+                            anchors.centerIn: parent
+                            font.family: "Verdana"
+                            font.pixelSize: 16
                         }
 
                         MouseArea {
@@ -137,7 +158,7 @@ ApplicationWindow {
         id: btn_enter_order
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 135
         anchors.bottomMargin: 30
         width: 200
         height: 40
@@ -174,7 +195,7 @@ ApplicationWindow {
         id: btn_upd
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 355
+        anchors.leftMargin: 435
         anchors.bottomMargin: 30
         width: 200
         height: 40

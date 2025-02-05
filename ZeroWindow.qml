@@ -5,9 +5,9 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: zeroWindow
     visible: true
-    width: 380
+    width: 370
     height: 380
-    title: "Панель администратора"
+    title: "Панель администратора (" + dataBase.m_my_login + ")"
 
     // кнопка для вызова нового окна и просмотра всех пользователей
     Button {
@@ -33,7 +33,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "Таблица \nпользователей"      // текст кнопки
+                text: "     Таблица \nпользователей"      // текст кнопки
                 color: btn_auth.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта
@@ -70,7 +70,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "Таблица \nингридиентов"      // текст кнопки
+                text: "    Таблица \nингредиентов"      // текст кнопки
                 color: btn_ingr.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта
@@ -108,7 +108,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "Сложные \nингридиенты"      // текст кнопки
+                text: "   Сложные \nингредиенты"      // текст кнопки
                 color: btn_complex_ingr.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта
@@ -146,7 +146,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "Рецепты \nтортов"      // текст кнопки
+                text: "  Рецепты \n дессертов"      // текст кнопки
                 color: btn_cakes.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта

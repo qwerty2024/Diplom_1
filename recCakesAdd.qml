@@ -5,8 +5,8 @@ ApplicationWindow {
     id: recCakesAddWindow
     visible: true
     width: 600
-    height: 670
-    title: "Добавить новый рецепт торта"
+    height: 720
+    title: "Добавить новый рецепт дессерта"
 
     property var comp_ingrts: []
 
@@ -33,13 +33,37 @@ ApplicationWindow {
         loadData()
     }
 
+    Rectangle {
+        width: 300
+        height: 680
+
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 285 // фиксированное расстояние от левой грани
+        anchors.topMargin: 20
+
+        border.color: "black"
+    }
+
+    Text{
+        text: "Описание дессерта: "
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 25
+        anchors.topMargin: 70
+        font.family: "Verdana"
+        font.pixelSize: 16
+    }
+
     Text{
         id: name_cake
         text: "Название: "
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 300
-        anchors.topMargin: 20
+        anchors.topMargin: 25
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -48,7 +72,9 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 300
-        anchors.topMargin: 50
+        anchors.topMargin: 55
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -57,7 +83,9 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 300
-        anchors.topMargin: 350
+        anchors.topMargin: 355
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -66,7 +94,9 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 300
-        anchors.topMargin: 390
+        anchors.topMargin: 395
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -75,7 +105,9 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 300
-        anchors.topMargin: 430
+        anchors.topMargin: 435
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     Text{
@@ -84,9 +116,11 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 300
-        anchors.topMargin: 480
+        anchors.topMargin: 485
         wrapMode: Text.WordWrap
         width: 300
+        font.family: "Verdana"
+        font.pixelSize: 16
     }
 
     // поле ввода названия
@@ -94,9 +128,9 @@ ApplicationWindow {
         id: input_name
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 20
-        width: 200
+        width: 250
         height: 35
         placeholderText: "Введите название"
         font.family: "Verdana"
@@ -112,15 +146,15 @@ ApplicationWindow {
 
     // поле ввода описания
     Rectangle {
-        width: 200;
+        width: 250;
         height: 200;
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.topMargin: 70
+        anchors.leftMargin: 25
+        anchors.topMargin: 90
 
-        border.color: "grey"
-        border.width: 2
+        border.color: "black"
+        border.width: 1
 
         Flickable {
             id: flick
@@ -155,6 +189,9 @@ ApplicationWindow {
                 wrapMode: TextEdit.Wrap
                 onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
 
+                font.family: "Verdana"
+                font.pixelSize: 16
+
                 Connections {
                     target: edit
                     onTextChanged: {
@@ -170,9 +207,9 @@ ApplicationWindow {
         id: input_cost
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 300
-        width: 200
+        width: 250
         height: 35
         placeholderText: "Введите стоимость"
         font.family: "Verdana"
@@ -190,9 +227,9 @@ ApplicationWindow {
         id: input_weight
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 350
-        width: 200
+        width: 250
         height: 35
         placeholderText: "Введите вес"
         font.family: "Verdana"
@@ -210,9 +247,9 @@ ApplicationWindow {
         id: input_pic
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 390
-        width: 200
+        width: 250
         height: 35
         placeholderText: "Название картинки"
         font.family: "Verdana"
@@ -230,9 +267,9 @@ ApplicationWindow {
         id: comboBox_1
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 440
-        width: 200
+        width: 250
         height: 35
         font.family: "Verdana"
         font.pixelSize: 16
@@ -245,9 +282,9 @@ ApplicationWindow {
         id: input_count
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 490
-        width: 200
+        width: 250
         height: 35
         placeholderText: "Введите количество"
         font.family: "Verdana"
@@ -259,9 +296,9 @@ ApplicationWindow {
         id: btn_add_comp_ingr_rec
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 540
-        width: 200
+        width: 250
         height: 40
 
         background: Rectangle{      // фон кнопки
@@ -315,9 +352,9 @@ ApplicationWindow {
         id: btn_add_rec
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
+        anchors.leftMargin: 25
         anchors.topMargin: 590
-        width: 200
+        width: 250
         height: 40
 
         background: Rectangle{      // фон кнопки

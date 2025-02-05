@@ -559,6 +559,8 @@ void Database::openZeroWindow()
 {
     qDebug() << "создаем нулевое окно";
 
+    my_login = login;
+
     QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/ZeroWindow.qml")));
     QObject *window = component.create();
 
@@ -589,6 +591,8 @@ void Database::openOneWindow()
 void Database::openTwoWindow()
 {
     qDebug() << "создаем второе окно";
+
+    my_login = login;
 
     QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/TwoWindow.qml")));
     QObject *window = component.create();
