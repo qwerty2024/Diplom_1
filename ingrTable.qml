@@ -5,8 +5,8 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: ingrWindow
     visible: true
-    width: 490
-    height: 760
+    width: 450
+    height: 700
     title: "Базовые ингридиенты"
 
     function loadData() {
@@ -25,7 +25,7 @@ ApplicationWindow {
 
 
     Rectangle {
-        width: 460
+        width: 440
         height: 400
 
         ListModel {
@@ -53,17 +53,17 @@ ApplicationWindow {
                 property int selectedRow: -1
 
                 TableViewColumn {
-                    width: 100
+                    width: 130
                     title: "Ингредиенты"
                     role: "ingredients"
                 }
                 TableViewColumn {
-                    width: 100
+                    width: 130
                     title: "Остаток"
                     role: "residue"
                 }
                 TableViewColumn {
-                    width: 100
+                    width: 130
                     title: "Годен до:"
                     role: "expiration_date"
                 }
@@ -110,8 +110,8 @@ ApplicationWindow {
         id: input_new_name
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.bottomMargin: 280
+        anchors.leftMargin: 115
+        anchors.bottomMargin: 250
         width: 200
         height: 35
         placeholderText: "Введите название"
@@ -124,8 +124,8 @@ ApplicationWindow {
         id: input_count
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.bottomMargin: 230
+        anchors.leftMargin: 115
+        anchors.bottomMargin: 200
         width: 200
         height: 35
         placeholderText: "Количество"
@@ -138,8 +138,8 @@ ApplicationWindow {
         id: input_expiration_date
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.bottomMargin: 180
+        anchors.leftMargin: 115
+        anchors.bottomMargin: 150
         width: 200
         height: 35
         placeholderText: "Годен до"
@@ -154,8 +154,8 @@ ApplicationWindow {
         id: btn_add_ingr
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.bottomMargin: 130
+        anchors.leftMargin: 115
+        anchors.bottomMargin: 100
         width: 200
         height: 40
 
@@ -195,8 +195,8 @@ ApplicationWindow {
         id: btn_delete_ingr
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.bottomMargin: 80
+        anchors.leftMargin: 115
+        anchors.bottomMargin: 50
         width: 200
         height: 40
 

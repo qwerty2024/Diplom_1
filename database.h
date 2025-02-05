@@ -145,6 +145,38 @@ public:
     QString curr_id_order = "";
     Q_PROPERTY(QString m_curr_id_order MEMBER curr_id_order CONSTANT)
 
+    // мой логин
+    QString my_login = "";
+    Q_PROPERTY(QString m_my_login MEMBER my_login CONSTANT)
+
+    // для моих заказов (клинте)
+    QString id_my_orders = "";
+    Q_PROPERTY(QString m_id_my_orders MEMBER id_my_orders CONSTANT)
+
+    QString date_my_orders = "";
+    Q_PROPERTY(QString m_date_my_orders MEMBER date_my_orders CONSTANT)
+
+    QString name_my_orders = "";
+    Q_PROPERTY(QString m_name_my_orders MEMBER name_my_orders CONSTANT)
+
+    QString status_my_orders = "";
+    Q_PROPERTY(QString m_status_my_orders MEMBER status_my_orders CONSTANT)
+
+    // для просмотра отзыва
+    QString estim_order = "";
+    Q_PROPERTY(QString m_estim_order MEMBER estim_order CONSTANT)
+
+    QString comm_order = "";
+    Q_PROPERTY(QString m_comm_order MEMBER comm_order CONSTANT)
+
+    // оценка каждого тортика
+    QString avg_est_cake = "";
+    Q_PROPERTY(QString m_avg_est_cake MEMBER avg_est_cake CONSTANT)
+
+    //
+    QString comments_for_cake = "";
+    Q_PROPERTY(QString m_comments_for_cake MEMBER comments_for_cake CONSTANT)
+
     virtual ~Database() {}
 
 public slots:
@@ -157,6 +189,12 @@ public slots:
     void update_orders();
     void enter_order(const QVariant &id);
     void change_status_order(const QVariant &st);
+    void open_my_orders();
+    void open_constructor();
+    void update_my_orders();
+    void give_me_otz(const QVariant &id);
+    void set_my_otz(const QVariant &id, const QVariant &comm, const QVariant &estim);
+    void order_my_cake(const QVariant &name, const QVariant &description, const QVariant &cost, const QVariant &weight, const QVariant &pic, const QVariantList &comp_ingredients, const QVariantList &counts);
 };
 
 #endif // DATABASE_H

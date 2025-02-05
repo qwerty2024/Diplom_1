@@ -4,8 +4,8 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: compIngrAddWindow
     visible: true
-    width: 600
-    height: 580
+    width: 500
+    height: 380
     title: "Добавить рецепт сложного ингредиента"
 
     // Массивы для хранения значений
@@ -48,7 +48,7 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 55
         anchors.topMargin: 20
-        width: 200
+        width: 230
         height: 35
         placeholderText: "Введите название"
         font.family: "Verdana"
@@ -69,7 +69,7 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 55
         anchors.topMargin: 70
-        width: 200
+        width: 230
         height: 35
         placeholderText: "Введите тип"
         font.family: "Verdana"
@@ -90,7 +90,7 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 55
         anchors.topMargin: 130
-        width: 200
+        width: 230
         height: 35
         placeholderText: "Ингридиент"
         font.family: "Verdana"
@@ -104,7 +104,7 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 55
         anchors.topMargin: 180
-        width: 200
+        width: 230
         height: 35
         placeholderText: "Количество ингридиента"
         font.family: "Verdana"
@@ -118,7 +118,7 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 55
         anchors.topMargin: 230
-        width: 200
+        width: 230
         height: 40
 
         background: Rectangle{      // фон кнопки
@@ -173,7 +173,7 @@ ApplicationWindow {
         anchors.left: parent.left
         anchors.leftMargin: 55
         anchors.topMargin: 280
-        width: 200
+        width: 230
         height: 40
 
         background: Rectangle{      // фон кнопки

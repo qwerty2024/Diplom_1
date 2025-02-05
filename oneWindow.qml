@@ -4,9 +4,17 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: oneWindow
     visible: true
-    width: 1200
-    height: 800
+    width: 800
+    height: 600
     title: "ЗАКАЗЧИК"
+
+    flags: Qt.Window | Qt.FramelessWindowHint // Отключаем обрамление окна
+
+    // основной фон
+    Image{
+        anchors.fill: parent
+        source: "images/bkg5.jpg"
+    }
 
     property int itemAngle: 60
     property int itemSize: 300
@@ -22,6 +30,9 @@ ApplicationWindow {
 
         var cakes = dataBase.m_cakes.split("@");
         var pics = dataBase.m_pics.split("@");
+        var estm = dataBase.m_avg_est_cake.split("@");
+
+        console.log("AAAA: ", dataBase.m_avg_est_cake);
 
         dataModel.clear()
 
@@ -30,7 +41,7 @@ ApplicationWindow {
         for (var i = 0; i < cakes.length; i++)
         {
             if (cakes[i] !== "")
-                dataModel.append({ name: cakes[i], pic: "file:///" + dataBase.m_path + "/pic_cakes/" + pics[i] + ".jpg" });
+                dataModel.append({ name: cakes[i], pic: "file:///" + dataBase.m_path + "/pic_cakes/" + pics[i] + ".jpg", estm: estm[i] });
         }
     }
 
@@ -39,11 +50,13 @@ ApplicationWindow {
         loadData()
     }
 
+
+
     Text {
         id: inform
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450
+        anchors.leftMargin: 280
         anchors.topMargin: 400
         font.pointSize: 24
     }
@@ -52,14 +65,38 @@ ApplicationWindow {
         id: inform_1
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450
+        anchors.leftMargin: 360
         anchors.topMargin: 430
         font.pointSize: 24
     }
 
+    Text {
+        id: re_text
+        anchors.top: parent.top
+        anchors.left: parent.left
+        text: "Рейтинг: "
+        anchors.leftMargin: 300
+        anchors.topMargin: 445
+        font.pointSize: 14
+    }
+
+    Text {
+        id: estimat_text
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 390
+        anchors.topMargin: 445
+        font.pointSize: 14
+    }
+
     Rectangle {
-        width: 1200
+        width: 800
         height: 400
+
+        Image{
+            anchors.fill: parent
+            source: "images/bkg4.jpg"
+        }
 
         ListModel {
             id: dataModel
@@ -78,6 +115,7 @@ ApplicationWindow {
                 if (currentIndex >= 0)
                 {
                     inform.text = model.get(currentIndex).name; // Обновляем текст в информе
+                    estimat_text.text = model.get(currentIndex).estm;
                 }
             }
 
@@ -90,7 +128,7 @@ ApplicationWindow {
                 PathAttribute { name: "angle"; value: itemAngle }
                 PathAttribute { name: "origin"; value: 0 }
                 PathLine {
-                    x: (view.width - itemSize) / 2
+                    x: (view.width - itemSize + 200) / 2
                     y: view.height / 2
                 }
                 PathAttribute { name: "angle"; value: itemAngle }
@@ -103,7 +141,7 @@ ApplicationWindow {
 
                 PathAttribute { name: "angle"; value: 0 }
                 PathLine {
-                    x: (view.width - itemSize) / 2 + itemSize
+                    x: (view.width - itemSize - 200) / 2 + itemSize
                     y: view.height / 2
                 }
                 PathAttribute { name: "angle"; value: 0 }
@@ -116,7 +154,7 @@ ApplicationWindow {
                 PathAttribute { name: "origin"; value: itemSize }
                 PathLine {
                     x: view.width
-                    y: view.height / 2
+                    y: view.height / 1.5
                 }
                 PathPercent { value: 1 }
                 PathAttribute { name: "z"; value: 0 }
@@ -147,22 +185,25 @@ ApplicationWindow {
                 if (currentIndex >= 0)
                 {
                     inform.text = model.get(currentIndex).name; // Обновляем текст в информе
+                    estimat_text.text = model.get(currentIndex).estm;
                 }
 
                 console.log("Current Index: ", currentIndex);
                 console.log("Selected Name: ", model.get(currentIndex).name);
                 console.log("Selected Picture: ", model.get(currentIndex).pic);
+                console.log("Estimation: ", model.get(currentIndex).estm);
             }
         }
     }
+
 
     // кнопка добавить
     Button {
         id: btn_cake
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450
-        anchors.topMargin: 450
+        anchors.leftMargin: 300
+        anchors.topMargin: 480
         width: 200
         height: 40
 
@@ -177,7 +218,7 @@ ApplicationWindow {
                                       normalColor
 
             border.color: "#01a3a4"
-            radius: 5
+            //radius: 5
 
             Text{
                 text: "Просмотр тортика"      // текст кнопки
@@ -191,6 +232,122 @@ ApplicationWindow {
         onClicked: {
             // обновили в базе данных
             dataBase.show_cake(inform.text);
+        }
+    }
+
+
+    // кнопка мои заказы
+    Button {
+        id: btn_my_orders
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 10
+        anchors.topMargin: 10
+        width: 200
+        height: 40
+
+        background: Rectangle{      // фон кнопки
+            property var normalColor: "#c7ecee"
+            property var hoveredColor: "#58e0da"
+            property var pressedColor: "#20b2aa"
+
+            anchors.fill: parent
+            color: btn_my_orders.pressed ? pressedColor :
+                   btn_my_orders.hovered ? hoveredColor :
+                                      normalColor
+
+            border.color: "#01a3a4"
+            //radius: 5
+
+            Text{
+                text: "Мои заказы"      // текст кнопки
+                color: btn_my_orders.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
+                font.family: "Verdana";     // семейство шрифтов
+                font.pixelSize: 18;         // размер шрифта
+                anchors.centerIn: parent
+            }
+        }
+
+        onClicked: {
+            // обновили в базе данных
+            dataBase.open_my_orders();
+        }
+    }
+
+    // кнопка конструктора
+    Button {
+        id: btn_construct
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 280
+        anchors.topMargin: 530
+        width: 240
+        height: 40
+
+        background: Rectangle{      // фон кнопки
+            property var normalColor: "#c7ecee"
+            property var hoveredColor: "#58e0da"
+            property var pressedColor: "#20b2aa"
+
+            anchors.fill: parent
+            color: btn_construct.pressed ? pressedColor :
+                   btn_construct.hovered ? hoveredColor :
+                                      normalColor
+
+            border.color: "#01a3a4"
+            //radius: 5
+
+            Text{
+                text: "Конструктор дессертов"      // текст кнопки
+                color: btn_construct.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
+                font.family: "Verdana";     // семейство шрифтов
+                font.pixelSize: 18;         // размер шрифта
+                anchors.centerIn: parent
+            }
+        }
+
+        onClicked: {
+            // обновили в базе данных
+            dataBase.open_constructor();
+        }
+    }
+
+    // кнопка выхода
+    Button {
+        id: btn_exit
+
+        anchors.top: parent.top
+        anchors.right: parent.right
+        anchors.rightMargin: 10
+        anchors.topMargin: 10
+
+        hoverEnabled: true
+        width: 40
+        height: 40
+
+        icon.source: "images/exit.png"
+        icon.color: "transparent"
+        display: Button.TextBesideIcon
+        icon.height: 50
+        icon.width: 50
+
+        background: Rectangle{      // фон кнопки
+            property var normalColor: "#ffc7a8"
+            property var hoveredColor: "#ffa575"
+            property var pressedColor: "#ff8442"
+
+            anchors.fill: parent
+            color: btn_exit.pressed ? pressedColor :
+                   btn_exit.hovered ? hoveredColor :
+                                 normalColor
+
+            border.color: "#ff722b"
+            //radius: 5
+        }
+
+        Connections {
+            target: exiter
+            onClicked: Qt.callLater(Qt.quit)
         }
     }
 }

@@ -6,8 +6,8 @@ import QtQuick.Layouts 1.1
 Window {
     id: mainWindow
     visible: true
-    width: 640
-    height: 480
+    width: 800
+    height: 600
 
     flags: Qt.Window | Qt.FramelessWindowHint // Отключаем обрамление окна
 
@@ -47,7 +47,7 @@ Window {
         anchors.left: parent.left
         anchors.leftMargin: 55
         anchors.bottomMargin: 210
-        color: "#01a3a4"            // цвет текста
+        color: "#000000"//"#01a3a4"            // цвет текста
         font.family: "Verdana";     // семейство шрифтов
         font.pixelSize: 18;         // размер шрифта
     }
@@ -66,20 +66,6 @@ Window {
             left: parent.left
             right: parent.right
         }
-        // Устанавливаем форму курсора, чтобы было понятно, что это изменение размера
-        //cursorShape: Qt.SizeVerCursor
-        //
-        //onPressed: {
-        //    // Запоминаем позицию по оси Y
-        //    previousY = mouseY
-        //}
-        //
-        //// При изменении позиции делаем пересчёт позиции окна, и его высоты
-        //onMouseYChanged: {
-        //    var dy = mouseY - previousY
-        //    mainWindow.setY(mainWindow.y + dy)
-        //    mainWindow.setHeight(mainWindow.height - dy)
-        //}
     }
 
     MouseArea {
@@ -90,16 +76,6 @@ Window {
             left: parent.left
             right: parent.right
         }
-        //cursorShape: Qt.SizeVerCursor
-        //
-        //onPressed: {
-        //    previousY = mouseY
-        //}
-        //
-        //onMouseYChanged: {
-        //    var dy = mouseY - previousY
-        //    mainWindow.setHeight(mainWindow.height + dy)
-        //}
     }
 
     MouseArea {
@@ -110,17 +86,6 @@ Window {
             bottom: bottomArea.top
             left: parent.left
         }
-        //cursorShape: Qt.SizeHorCursor
-        //
-        //onPressed: {
-        //    previousX = mouseX
-        //}
-        //
-        //onMouseXChanged: {
-        //    var dx = mouseX - previousX
-        //    mainWindow.setX(mainWindow.x + dx)
-        //    mainWindow.setWidth(mainWindow.width - dx)
-        //}
     }
 
     MouseArea {
@@ -131,16 +96,6 @@ Window {
             bottom: bottomArea.top
             right: parent.right
         }
-        //cursorShape:  Qt.SizeHorCursor
-        //
-        //onPressed: {
-        //    previousX = mouseX
-        //}
-        //
-        //onMouseXChanged: {
-        //    var dx = mouseX - previousX
-        //    mainWindow.setWidth(mainWindow.width + dx)
-        //}
     }
 
     // Центральная область для перемещения окна приложения
@@ -208,9 +163,9 @@ Window {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.leftMargin: 55
-        anchors.bottomMargin: 75
+        anchors.bottomMargin: 80
         width: 200
-        height: 40
+        height: 35
 
         background: Rectangle{      // фон кнопки
             property var normalColor: "#c7ecee"
@@ -223,7 +178,7 @@ Window {
                                       normalColor
 
             border.color: "#01a3a4"
-            radius: 5
+            //radius: 5
 
             Text{
                 text: "Авторизоваться"      // текст кнопки
@@ -247,9 +202,9 @@ Window {
         anchors.bottom: parent.bottom
         anchors.left: parent.left
         anchors.leftMargin: 55
-        anchors.bottomMargin: 25
+        anchors.bottomMargin: 35
         width: 200
-        height: 40
+        height: 35
 
         background: Rectangle{      // фон кнопки
             property var normalColor: "#c7ecee"
@@ -262,7 +217,7 @@ Window {
                                       normalColor
 
             border.color: "#01a3a4"
-            radius: 5
+            //radius: 5
 
             Text{
                 text: "Регистрация"      // текст кнопки
@@ -308,7 +263,7 @@ Window {
                                  normalColor
 
             border.color: "#ff722b"
-            radius: 5
+            //radius: 5
         }
 
         Connections {

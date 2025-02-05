@@ -1,27 +1,28 @@
 import QtQuick 2.5
 import QtQuick.Controls 2.1
 
+
 ApplicationWindow {
     id: zeroWindow
     visible: true
-    width: 640
-    height: 480
-    title: "АДМИН"
+    width: 380
+    height: 380
+    title: "Панель администратора"
 
     // кнопка для вызова нового окна и просмотра всех пользователей
     Button {
         id: btn_auth
-        anchors.bottom: parent.bottom
+        anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.bottomMargin: 75
-        width: 250
-        height: 40
+        anchors.leftMargin: 25
+        anchors.topMargin: 25
+        width: 150
+        height: 150
 
         background: Rectangle{      // фон кнопки
-            property var normalColor: "#c7ecee"
-            property var hoveredColor: "#58e0da"
-            property var pressedColor: "#20b2aa"
+            property var normalColor: "#c7ecff"
+            property var hoveredColor: "#58e0ff"
+            property var pressedColor: "#20b2ff"
 
             anchors.fill: parent
             color: btn_auth.pressed ? pressedColor :
@@ -32,7 +33,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "Таблица пользователей"      // текст кнопки
+                text: "Таблица \nпользователей"      // текст кнопки
                 color: btn_auth.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта
@@ -50,10 +51,10 @@ ApplicationWindow {
         id: btn_ingr
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.bottomMargin: 135
-        width: 250
-        height: 40
+        anchors.leftMargin: 25
+        anchors.bottomMargin: 25
+        width: 150
+        height: 150
 
         background: Rectangle{      // фон кнопки
             property var normalColor: "#c7ecff"
@@ -69,7 +70,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "Таблица ингридиентов"      // текст кнопки
+                text: "Таблица \nингридиентов"      // текст кнопки
                 color: btn_ingr.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта
@@ -86,12 +87,12 @@ ApplicationWindow {
     // кнопка для вызова нового окна и просмотра всех рецептов сложных ингридиентов
     Button {
         id: btn_complex_ingr
-        anchors.bottom: parent.bottom
+        anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.bottomMargin: 185
-        width: 250
-        height: 40
+        anchors.leftMargin: 195
+        anchors.topMargin: 25
+        width: 150
+        height: 150
 
         background: Rectangle{      // фон кнопки
             property var normalColor: "#c7ecff"
@@ -107,7 +108,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "Сложные ингридиенты"      // текст кнопки
+                text: "Сложные \nингридиенты"      // текст кнопки
                 color: btn_complex_ingr.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта
@@ -126,10 +127,10 @@ ApplicationWindow {
         id: btn_cakes
         anchors.bottom: parent.bottom
         anchors.left: parent.left
-        anchors.leftMargin: 55
-        anchors.bottomMargin: 235
-        width: 250
-        height: 40
+        anchors.leftMargin: 195
+        anchors.bottomMargin: 25
+        width: 150
+        height: 150
 
         background: Rectangle{      // фон кнопки
             property var normalColor: "#c7ecff"
@@ -145,7 +146,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "Рецепты тортов"      // текст кнопки
+                text: "Рецепты \nтортов"      // текст кнопки
                 color: btn_cakes.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта

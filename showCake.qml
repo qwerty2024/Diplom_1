@@ -6,8 +6,8 @@ import QtQuick.Window 2.5
 ApplicationWindow {
     id: recCakesWindow
     visible: true
-    width: 1200
-    height: 700
+    width: 1000
+    height: 680
     title: dataBase.m_curr_cake_name
 
     function update_show_rec_cake()
@@ -34,7 +34,7 @@ ApplicationWindow {
         name_weight_curr.text = "Вес: " + m_curr_cake_weight;
         name_price_curr.text = "Цена: " + m_curr_cake_price;
         name_desc_curr.text = "Описание: " + m_curr_cake_desc;
-        name_estim_curr.text = "Оценка: " + result;
+        //name_estim_curr.text = "Оценка: " + result;
         name_review_curr.text = "Отзывы: " + m_curr_cake_review;
 
         // Обновляем текстовое поле
@@ -54,6 +54,8 @@ ApplicationWindow {
     Component.onCompleted:
     {
         update_show_rec_cake()
+
+        edit.text = dataBase.m_comments_for_cake
     }
 
     Text{
@@ -92,14 +94,14 @@ ApplicationWindow {
         anchors.topMargin: 110
     }
 
-    Text{
-        id: name_estim_curr
-        text: "Оценка: "
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.leftMargin: 30 // фиксированное расстояние от левой грани
-        anchors.topMargin: 200
-    }
+    //Text{
+    //    id: name_estim_curr
+    //    text: "Оценка: "
+    //    anchors.top: parent.top
+    //    anchors.left: parent.left
+    //    anchors.leftMargin: 30 // фиксированное расстояние от левой грани
+    //    anchors.topMargin: 200
+    //}
 
     Text{
         id: name_review_curr
@@ -107,7 +109,7 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 30 // фиксированное расстояние от левой грани
-        anchors.topMargin: 230
+        anchors.topMargin: 370
     }
 
     Text{
@@ -125,9 +127,64 @@ ApplicationWindow {
         height: 600
         anchors.top: parent.top
         anchors.left: parent.left
-        anchors.leftMargin: 450 // фиксированное расстояние от левой грани
+        anchors.leftMargin: 350 // фиксированное расстояние от левой грани
         anchors.topMargin: 30
         //source: "pic_cakes/cake_1.jpg"
+    }
+
+    // поле вывода отзывов
+    Rectangle {
+        width: 200;
+        height: 200;
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.leftMargin: 30
+        anchors.topMargin: 400
+
+        border.color: "grey"
+        border.width: 2
+
+        Flickable {
+            id: flick
+
+            width: 190;
+            height: 190;
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.leftMargin: 5
+            anchors.topMargin: 5
+
+            contentWidth: edit.paintedWidth
+            contentHeight: edit.paintedHeight
+            clip: true
+
+            function ensureVisible(r)
+            {
+                if (contentX >= r.x)
+                    contentX = r.x;
+                else if (contentX+width <= r.x+r.width)
+                    contentX = r.x+r.width-width;
+                if (contentY >= r.y)
+                    contentY = r.y;
+                else if (contentY+height <= r.y+r.height)
+                    contentY = r.y+r.height-height;
+            }
+
+            TextEdit {
+                id: edit
+                width: flick.width
+                focus: true
+                wrapMode: TextEdit.Wrap
+                onCursorRectangleChanged: flick.ensureVisible(cursorRectangle)
+
+                Connections {
+                    target: edit
+                    onTextChanged: {
+                        //info_cake.text = "Описание:\n " + edit.text;
+                    }
+                }
+            }
+        }
     }
 
     // кнопка заказать
@@ -136,7 +193,7 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 30
-        anchors.topMargin: 600
+        anchors.topMargin: 620
         width: 200
         height: 40
 

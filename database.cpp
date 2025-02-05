@@ -7,6 +7,7 @@
 #include <QSqlError>
 #include <string>
 #include <unordered_set>
+#include <unordered_map>
 #include <QDebug>
 #include <QDateTime>
 
@@ -505,18 +506,51 @@ void Database::update_cakes_and_pic()
 
     cakes = "";
     pics = "";
+    avg_est_cake = "";
 
-    if(query->exec("SELECT name,name_pic FROM Cakes;"))
+    unordered_map<QString, pair<int, int>> um;
+
+    if(query->exec("SELECT name,name_pic,id_cake FROM Cakes;"))
     {
         while (query->next())
         {
             cakes.push_back(query->value(0).toString() + '@');
             pics.push_back(query->value(1).toString() + '@');
+            um[query->value(2).toString()] = {0, 0};
         }
     }
 
     qDebug() << cakes;
     qDebug() << pics;
+
+    if(query->exec("SELECT id_cake,estimation FROM Orders;"))
+    {
+        while (query->next())
+        {
+            if (query->value(1).toString() != "")
+            {
+                um[query->value(0).toString()].first += query->value(1).toInt();
+                um[query->value(0).toString()].second++;
+            }
+        }
+    }
+
+    if(query->exec("SELECT id_cake FROM Cakes;"))
+    {
+        while (query->next())
+        {
+            auto a = um[query->value(0).toString()];
+
+            if (a.second == 0)
+            {
+                avg_est_cake.push_back("Нет оценок@");
+            }
+            else
+            {
+                avg_est_cake.push_back(QString::number((double)a.first / a.second) + '@');
+            }
+        }
+    }
 
     delete query;
 }
@@ -538,6 +572,7 @@ void Database::openZeroWindow()
 
 void Database::openOneWindow()
 {
+    my_login = login;
     qDebug() << "создаем первое окно";
 
     QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/OneWindow.qml")));
@@ -724,6 +759,20 @@ void Database::show_rec_cake(const QVariant &name)
 
 void Database::show_cake(const QVariant &name)
 {
+    comments_for_cake = "";
+
+    query = new QSqlQuery(db);
+
+    if (query->exec("SELECT login,comment FROM Orders o JOIN Cakes c ON o.id_cake = c.id_cake WHERE c.name = '" + name.toString() + "';"))
+    {
+        while (query->next())
+        {
+            comments_for_cake.push_back(query->value(0).toString() + ": " + query->value(1).toString() + "\n");
+        }
+    }
+
+    delete query;
+
     show_rec_cake(name);
 
     qDebug() << "открываем окно просмотра тортика";
@@ -810,6 +859,7 @@ void Database::update_orders()
     delete query;
 }
 
+
 void Database::enter_order(const QVariant &id)
 {
     QString id_ord = id.toString();
@@ -856,8 +906,167 @@ void Database::change_status_order(const QVariant &st)
 
     if (stat > curr_status_order)
     {
-        query->exec("UPDATE Orders SET status = " + stat + ", login = '" + login + "' WHERE id_order = " + curr_id_order + ";");
+        query->exec("UPDATE Orders SET status = " + stat + ", id_worker = '" + login + "' WHERE id_order = " + curr_id_order + ";");
     }
+
+    delete query;
+}
+
+void Database::open_my_orders()
+{
+    qDebug() << "открываем окно просмотра моих заказов";
+
+    update_my_orders();
+
+    QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/showMyOrders.qml")));
+    QObject *window = component.create();
+
+    if (window == nullptr) {
+        qDebug() << "Ошибка при загрузке showMyOrders.qml:" << component.errors();
+    } else {
+        // Здесь вы можете настроить это окно, если нужно
+        window->setProperty("visible", true); // сделать окно видимым
+    }
+}
+
+void Database::open_constructor()
+{
+    qDebug() << "открываем окно конструктора";
+
+    update_my_orders();
+
+    QQmlComponent component(enginePtr, QUrl(QStringLiteral("qrc:/showConstructor.qml")));
+    QObject *window = component.create();
+
+    if (window == nullptr) {
+        qDebug() << "Ошибка при загрузке showConstructor.qml:" << component.errors();
+    } else {
+        // Здесь вы можете настроить это окно, если нужно
+        window->setProperty("visible", true); // сделать окно видимым
+    }
+}
+
+void Database::update_my_orders()
+{
+    query = new QSqlQuery(db);
+
+    id_my_orders = "";
+    date_my_orders = "";
+    name_my_orders = "";
+    status_my_orders = "";
+
+    QString id_cake = "";
+
+    if (query->exec("SELECT Orders.id_order,Orders.date,Cakes.name,Orders.status FROM Orders JOIN Cakes ON Orders.id_cake = Cakes.id_cake WHERE Orders.login = '" + my_login + "';"))
+    {
+        while (query->next())
+        {
+            id_my_orders.push_back(query->value(0).toString() + '@');
+            date_my_orders.push_back(query->value(1).toString() + '@');
+            name_my_orders.push_back(query->value(2).toString() + '@');
+            status_my_orders.push_back(query->value(3).toString() + '@');
+        }
+    }
+
+    QString error = query->lastError().text();
+    qDebug() << "Ошибка при обновлении заказов: " << error;
+
+    qDebug() << id_my_orders;
+    qDebug() << date_my_orders;
+    qDebug() << name_my_orders;
+    qDebug() << status_my_orders;
+
+    delete query;
+}
+
+void Database::give_me_otz(const QVariant &id)
+{
+    qDebug() << "запрос отзыва";
+
+    estim_order = "";
+    comm_order = "";
+
+    query = new QSqlQuery(db);
+
+    if (query->exec("SELECT Orders.estimation,Orders.comment FROM Orders WHERE Orders.id_order = '" + id.toString() + "';"))
+    {
+        while (query->next())
+        {
+            estim_order.push_back(query->value(0).toString());
+            comm_order.push_back(query->value(1).toString());
+        }
+    }
+
+    delete query;
+}
+
+void Database::set_my_otz(const QVariant &id, const QVariant &comm, const QVariant &estim)
+{
+    qDebug() << "установить отзыв и оценку";
+
+    query = new QSqlQuery(db);
+
+    qDebug() << id.toString();
+
+    QString curr_status = "";
+    if (query->exec("SELECT Orders.status FROM Orders WHERE Orders.id_order = " + id.toString() + ";"))
+    {
+        while (query->next())
+        {
+            curr_status.push_back(query->value(0).toString());
+        }
+    }
+
+    qDebug() << "Текущий статус: " << curr_status;
+
+    if (curr_status == "5")
+    {
+        query->exec("UPDATE Orders SET estimation = " + estim.toString() + ", comment = '" + comm.toString() + "' WHERE id_order = " + id.toString() + ";");
+    }
+    else
+    {
+        QMessageBox::information(qobject_cast<QWidget *> (parent()), "Внимание!", "Оставить отзыв возможно только после получения заказа!");
+    }
+
+    delete query;
+}
+
+void Database::order_my_cake(const QVariant &name, const QVariant &description, const QVariant &cost, const QVariant &weight, const QVariant &pic, const QVariantList &comp_ingredients, const QVariantList &counts)
+{
+    query = new QSqlQuery(db);
+
+    // Добавим торт, если его нет
+    query->exec("INSERT OR IGNORE INTO Cakes(name,price,weight,description,name_pic) VALUES('" + name.toString() + "'," + cost.toString() + "," + weight.toString() + ",'" + description.toString() + "','" + pic.toString() + "');");
+
+    //QString error = query->lastError().text();
+    //qDebug() << "Ошибка1: " << error;
+
+    int id_cake = -1;
+    query->exec("SELECT id_cake FROM Cakes WHERE name = '" + name.toString() + "';");
+    if (query->next())
+        id_cake = query->value(0).toInt();
+
+    //error = query->lastError().text();
+    //qDebug() << "Ошибка2: " << error << id_type;
+
+    for (int i = 0; i < comp_ingredients.size(); i++)
+    {
+        int id_ingr = -1;
+        query->exec("SELECT id_comp_ingr FROM Compound_ingr WHERE name_comp_ingr = '" + comp_ingredients[i].toString() + "';");
+        if (query->next())
+            id_ingr = query->value(0).toInt();
+
+        //qDebug() << name.toString() << QString::number(id_type) << ingredients[i].toString() << counts[i].toString();
+        query->exec("INSERT INTO Recipe_cake(id_cake,id_comp_ingr,count) VALUES(" + QString::number(id_cake) + "," + QString::number(id_ingr) + "," + counts[i].toString() + ");");
+        //error = query->lastError().text();
+        //qDebug() << "Ошибка: " << error;
+    }
+
+    QDateTime now = QDateTime::currentDateTime();
+    QString d = now.toString("yyyy-MM-dd HH:mm:ss");
+
+    // Добавим торт, если его нет
+    query->exec("INSERT INTO Orders(login,id_cake,date) VALUES('" + login + "'," + QString::number(id_cake) + ",'" + d + "');");
 
     delete query;
 }

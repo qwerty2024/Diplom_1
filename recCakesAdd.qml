@@ -4,8 +4,8 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: recCakesAddWindow
     visible: true
-    width: 700
-    height: 800
+    width: 600
+    height: 670
     title: "Добавить новый рецепт торта"
 
     property var comp_ingrts: []
@@ -44,7 +44,7 @@ ApplicationWindow {
 
     Text{
         id: info_cake
-        text: "Название: "
+        text: "Описание: "
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 300

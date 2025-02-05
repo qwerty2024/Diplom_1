@@ -4,7 +4,7 @@ import QtQuick.Controls 2.1
 ApplicationWindow {
     id: userWindow
     visible: true
-    width: 400
+    width: 360
     height: 580
     title: "Все пользователи"
 
