@@ -174,6 +174,21 @@ ApplicationWindow {
         font.pixelSize: 16
     }
 
+    //ComboBox {
+    //    id: comboBox_1
+    //    anchors.top: parent.top
+    //    anchors.left: parent.left
+    //    anchors.leftMargin: 25
+    //    anchors.topMargin: 400
+    //    width: 250
+    //    height: 35
+    //    font.family: "Verdana"
+    //    font.pixelSize: 16
+    //
+    //    model: comp_ingrts
+    //    currentIndex: 0 // Устанавливаем индекс по умолчанию
+    //}
+
     ComboBox {
         id: comboBox_1
         anchors.top: parent.top
@@ -187,6 +202,35 @@ ApplicationWindow {
 
         model: comp_ingrts
         currentIndex: 0 // Устанавливаем индекс по умолчанию
+
+        popup: Popup {
+              id:comboPopup
+              height: 240
+              width: comboBox_1.width
+              padding: 1
+
+              contentItem: ListView {
+                  id:listView
+                  width: comboBox_1.width
+                  height: 240
+                  implicitHeight: contentHeight
+                  model: comboBox_1.popup.visible ? comboBox_1.delegateModel : null
+
+
+                  ScrollIndicator.vertical: ScrollIndicator { }
+
+              }
+
+              background: Rectangle {
+                 //radius: 20
+                 anchors.top: parent.top
+                 anchors.topMargin: -30
+                 width: 250
+                 height: 300
+                 border.width: 1
+                 border.color:"black"
+              }
+          }
     }
 
     TextField {

@@ -16,6 +16,74 @@ ApplicationWindow {
         source: "images/bkg5.jpg"
     }
 
+    property int previousX
+    property int previousY
+
+    MouseArea {
+        id: topArea
+        height: 5
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+        }
+    }
+
+    MouseArea {
+        id: bottomArea
+        height: 5
+        anchors {
+            bottom: parent.bottom
+            left: parent.left
+            right: parent.right
+        }
+    }
+
+    MouseArea {
+        id: leftArea
+        width: 5
+        anchors {
+            top: topArea.bottom
+            bottom: bottomArea.top
+            left: parent.left
+        }
+    }
+
+    MouseArea {
+        id: rightArea
+        width: 5
+        anchors {
+            top: topArea.bottom
+            bottom: bottomArea.top
+            right: parent.right
+        }
+    }
+
+    // Центральная область для перемещения окна приложения
+    MouseArea {
+        anchors {
+            top: topArea.bottom
+            bottom: bottomArea.top
+            left: leftArea.right
+            right: rightArea.left
+        }
+
+        onPressed: {
+            previousX = mouseX
+            previousY = mouseY
+        }
+
+        onMouseXChanged: {
+            var dx = mouseX - previousX
+            oneWindow.setX(oneWindow.x + dx)
+        }
+
+        onMouseYChanged: {
+            var dy = mouseY - previousY
+            oneWindow.setY(oneWindow.y + dy)
+        }
+    }
+
     property int itemAngle: 60
     property int itemSize: 300
 

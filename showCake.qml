@@ -143,7 +143,7 @@ ApplicationWindow {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 350 // фиксированное расстояние от левой грани
-        anchors.topMargin: 30
+        anchors.topMargin: 10
         //source: "pic_cakes/cake_1.jpg"
     }
 

@@ -9,6 +9,7 @@ ApplicationWindow {
     title: "Добавить новый рецепт дессерта"
 
     property var comp_ingrts: []
+    //property ListModel ingredientsModel: ListModel {}
 
     property var comp_ingrts_curr: []
     property var counts: []
@@ -20,6 +21,14 @@ ApplicationWindow {
         comp_ingrts = dataBase.m_comp_ingr.split("@");
 
         comp_ingrts.pop();
+
+        // Очищаем модель перед заполнением
+        //ingredientsModel.clear();
+
+        // Заполняем ListModel элементами из comp_ingrts
+        //for (var i = 0; i < comp_ingrts.length; i++) {
+        //    ingredientsModel.append({"ingredient": comp_ingrts[i]});
+        //}
 
         //for (var i = 0; i < comp_ingrts.length; i++)
         //{
@@ -276,6 +285,35 @@ ApplicationWindow {
 
         model: comp_ingrts
         currentIndex: 0 // Устанавливаем индекс по умолчанию
+
+        popup: Popup {
+              id:comboPopup
+              height: 240
+              width: comboBox_1.width
+              padding: 1
+
+              contentItem: ListView {
+                  id:listView
+                  width: comboBox_1.width
+                  height: 240
+                  implicitHeight: contentHeight
+                  model: comboBox_1.popup.visible ? comboBox_1.delegateModel : null
+
+
+                  ScrollIndicator.vertical: ScrollIndicator { }
+
+              }
+
+              background: Rectangle {
+                 //radius: 20
+                 anchors.top: parent.top
+                 anchors.topMargin: -30
+                 width: 250
+                 height: 300
+                 border.width: 1
+                 border.color:"black"
+              }
+          }
     }
 
     TextField {

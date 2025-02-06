@@ -17,29 +17,6 @@ Window {
         source: "images/bkg2.jpg"
     }
 
-    // названиеImage{
-    //    anchors.top: parent.top
-    //    anchors.left: parent.left
-    //    anchors.leftMargin: -20
-    //    anchors.topMargin: -35
-    //    width: 550
-    //    height: 250
-    //    source: "images/name3.png"
-    //}
-    //
-    //// картинка с тортиком
-    //Image{
-    //    //текст #203D88  тени 847A25 стиль nautilus pompilus regular
-    //    anchors.bottom: parent.bottom
-    //    anchors.right: parent.right
-    //    anchors.rightMargin: 15
-    //    anchors.bottomMargin: 15
-    //    width: 300
-    //    height: 300
-    //    source: "images/cake.png"
-    //
-    //}
-
 
     Text {
         text: "Вход: "
