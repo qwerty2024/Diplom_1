@@ -6,7 +6,7 @@ ApplicationWindow {
     visible: true
     width: 600
     height: 720
-    title: "Добавить новый рецепт дессерта"
+    title: "Добавить новый рецепт десерта"
 
     property var comp_ingrts: []
     //property ListModel ingredientsModel: ListModel {}
@@ -55,7 +55,7 @@ ApplicationWindow {
     }
 
     Text{
-        text: "Описание дессерта: "
+        text: "Описание десерта: "
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.leftMargin: 25

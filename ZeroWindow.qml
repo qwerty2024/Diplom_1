@@ -146,7 +146,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "  Рецепты \n дессертов"      // текст кнопки
+                text: "  Рецепты \n десертов"      // текст кнопки
                 color: btn_cakes.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта

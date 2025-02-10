@@ -96,7 +96,7 @@ ApplicationWindow {
 
                 TableViewColumn {
                     width: 220
-                    title: "Название дессерта"
+                    title: "Название десерта"
                     role: "name_cake"
                 }
 

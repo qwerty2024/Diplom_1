@@ -84,6 +84,8 @@ Database::Database(QObject *parent) : QObject(parent)
                                     "review TEXT);");
 
 
+//query->exec("DELETE FROM Cakes WHERE name = 'МОЙ ДЕССЕРТ';");
+
     // Создаем таблицу - Рецепты
     query->exec("CREATE TABLE Recipe_cake(id_recipe INTEGER PRIMARY KEY AUTOINCREMENT, "
                                          "id_cake INTEGER NOT NULL, "
@@ -104,18 +106,6 @@ Database::Database(QObject *parent) : QObject(parent)
                                     "id_worker VARCHAR(255), "
                                     "FOREIGN KEY (login) REFERENCES Users(login), "
                                     "FOREIGN KEY (id_cake) REFERENCES Cakes(id_cake));");
-
-
-    //    // Создаем таблицу - Заказанные торты
-    //    query->exec("CREATE TABLE Ordered_cake(id_ordered_cake INT PRIMARY KEY AUTO_INCREMENT, "
-    //                                    "id_cake INT NOT NULL, "
-    //                                    "quantity SMALLINT NOT NULL, "
-    //                                    "id_order INT NOT NULL, "
-    //                                    "id_worker VARCHAR(255), "
-    //                                    "FOREIGN KEY (id_order) REFERENCES Orders(id_order))"
-    //                                    "FOREIGN KEY (id_worker) REFERENCES Users(login));");
-
-
 
     //QString error = query->lastError().text();
     //qDebug() << "Ошибка: " << error;

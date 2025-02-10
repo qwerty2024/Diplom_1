@@ -6,7 +6,7 @@ ApplicationWindow {
     visible: true
     width: 650
     height: 620
-    title: "Конструктор дессертов"
+    title: "Конструктор десертов"
 
     property var comp_ingrts: []
 

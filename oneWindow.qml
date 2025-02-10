@@ -366,7 +366,7 @@ ApplicationWindow {
             //radius: 5
 
             Text{
-                text: "Конструктор дессертов"      // текст кнопки
+                text: "Конструктор десертов"      // текст кнопки
                 color: btn_construct.pressed ? "#ffffff" : "#01a3a4"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта

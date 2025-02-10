@@ -8,7 +8,7 @@ ApplicationWindow {
     visible: true
     width: 700
     height: 750
-    title: "Рецепты дессертов"
+    title: "Рецепты десертов"
 
     function update_show_rec_cake()
     {

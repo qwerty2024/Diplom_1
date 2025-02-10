@@ -35,10 +35,10 @@ ApplicationWindow {
                     dataModel.append({ id: m_id_my_orders[i], date: m_date_my_orders[i], name: m_name_my_orders[i], status: "Подготовлены ингредиенты" });
                 }else if (m_status_my_orders[i] === "3")
                 {
-                    dataModel.append({ id: m_id_my_orders[i], date: m_date_my_orders[i], name: m_name_my_orders[i], status: "Дессерт собран" });
+                    dataModel.append({ id: m_id_my_orders[i], date: m_date_my_orders[i], name: m_name_my_orders[i], status: "Десерт собран" });
                 }else if (m_status_my_orders[i] === "4")
                 {
-                    dataModel.append({ id: m_id_my_orders[i], date: m_date_my_orders[i], name: m_name_my_orders[i], status: "Дессерт декорирован" });
+                    dataModel.append({ id: m_id_my_orders[i], date: m_date_my_orders[i], name: m_name_my_orders[i], status: "Десерт декорирован" });
                 }else if (m_status_my_orders[i] === "5")
                 {
                     dataModel.append({ id: m_id_my_orders[i], date: m_date_my_orders[i], name: m_name_my_orders[i], status: "Готов!" });

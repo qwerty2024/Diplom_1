@@ -124,7 +124,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "Дессерт \n собран"      // текст кнопки
+                text: "Десерт \n собран"      // текст кнопки
                 color: btn_status_3.pressed ? "#ffffff" : "#000000"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта
@@ -164,7 +164,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "    Дессерт \nдекорирован"      // текст кнопки
+                text: "    Десерт \nдекорирован"      // текст кнопки
                 color: btn_status_4.pressed ? "#ffffff" : "#000000"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта
@@ -204,7 +204,7 @@ ApplicationWindow {
             radius: 5
 
             Text{
-                text: "   Дессерт\n  упакован \n   и готов \n  к выдаче"      // текст кнопки
+                text: "   Десерт\n  упакован \n   и готов \n  к выдаче"      // текст кнопки
                 color: btn_status_5.pressed ? "#ffffff" : "#000000"            // цвет текста
                 font.family: "Verdana";     // семейство шрифтов
                 font.pixelSize: 18;         // размер шрифта
